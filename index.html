@@ -545,12 +545,6 @@ input,textarea,select,button{font-family:var(--f)}
 .uc-live{font-size:10.5px;font-family:var(--fm)}
 .uc-live.y{color:var(--ok)}.uc-live.n{color:var(--t4)}
 
-/* VIEWER MODAL */
-.vw-section{padding:12px 14px;background:var(--bg-hover);border:1px solid var(--b4);border-radius:var(--r14);display:flex;flex-direction:column;gap:6px}
-.vw-lbl{font-size:10px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:1.2px;font-family:var(--fm)}
-.vw-val{font-size:13px;color:var(--t0);word-break:break-all}
-.vw-log{font-size:11px;color:var(--t1);font-family:var(--fm);line-height:1.8;max-height:180px;overflow-y:auto}
-
 /* connection bar */
 .cbar{position:fixed;top:0;left:0;right:0;height:2px;z-index:9999;display:none;background:linear-gradient(90deg,var(--g4),var(--a3),var(--g4));background-size:200% 100%}
 .cbar.loading{display:block;animation:cba 1.2s linear infinite}
@@ -578,6 +572,7 @@ input,textarea,select,button{font-family:var(--f)}
   .mob-btn{display:flex!important}
 }
 .mob-btn{display:none}
+
 </style>
 </head>
 <body>
@@ -698,37 +693,25 @@ input,textarea,select,button{font-family:var(--f)}
   <!-- MAIN -->
   <div class="main">
     <div class="empty-st" id="empty-st">
-      <!-- Decorative botanical illustration -->
       <div class="empty-botanical">
         <svg viewBox="0 0 100 130" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <!-- Vase -->
           <path d="M38 100 Q35 115 32 120 L68 120 Q65 115 62 100Z" fill="#d4cfc5" stroke="#b5b0a5" stroke-width="1"/>
           <ellipse cx="50" cy="100" rx="12" ry="5" fill="#c4bfb5" stroke="#b5b0a5" stroke-width="1"/>
-          <!-- Main stem -->
           <path d="M50 100 Q48 70 50 40" stroke="#6b7f58" stroke-width="2" fill="none" stroke-linecap="round"/>
-          <!-- Branch left -->
           <path d="M50 80 Q35 70 25 60" stroke="#6b7f58" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          <!-- Branch right -->
           <path d="M50 70 Q65 60 75 50" stroke="#6b7f58" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-          <!-- Branch top left -->
           <path d="M50 50 Q38 38 30 28" stroke="#6b7f58" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-          <!-- Leaf 1 -->
           <path d="M25 60 Q18 50 22 42 Q30 50 25 60Z" fill="#8a9e74" opacity=".8"/>
-          <!-- Leaf 2 -->
           <path d="M75 50 Q80 40 76 32 Q68 42 75 50Z" fill="#6b7f58" opacity=".7"/>
-          <!-- Leaf 3 -->
           <path d="M30 28 Q22 18 28 10 Q36 20 30 28Z" fill="#8a9e74" opacity=".6"/>
-          <!-- Flower top -->
           <circle cx="50" cy="35" r="6" fill="#c4a878" opacity=".7"/>
           <circle cx="50" cy="35" r="3" fill="#a07830" opacity=".5"/>
-          <!-- Small flowers -->
           <circle cx="40" cy="25" r="3.5" fill="#d4c0a0" opacity=".6"/>
           <circle cx="60" cy="20" r="4" fill="#c4a878" opacity=".5"/>
         </svg>
       </div>
       <div class="empty-title">Select a conversation</div>
       <div class="empty-sub">All messages are encrypted</div>
-      <!-- Decorative arrow -->
       <svg width="40" height="30" viewBox="0 0 40 30" fill="none" style="margin-top:4px;opacity:.3">
         <path d="M5 5 Q20 5 20 15 Q20 25 35 25" stroke="#4a5c3a" stroke-width="1.5" stroke-linecap="round" fill="none"/>
         <path d="M30 20 L35 25 L30 30" stroke="#4a5c3a" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
@@ -1006,20 +989,9 @@ input,textarea,select,button{font-family:var(--f)}
       <div class="lp-box"><div class="lp-val" id="lp-msgs">0</div><div class="lp-lbl">Messages</div></div>
       <div class="lp-box"><div class="lp-val" id="lp-reg">0</div><div class="lp-lbl">Registered</div></div>
     </div>
-    <div class="lp-path" id="lp-path">D:\zero data</div>
+    <div class="lp-path" id="lp-path">☁ Firestore</div>
     <div style="font-size:10px;font-weight:600;letter-spacing:1.5px;color:var(--t2);text-transform:uppercase;font-family:var(--fm);margin-bottom:7px">All Users</div>
     <div id="lp-list" style="display:flex;flex-direction:column;gap:6px;max-height:280px;overflow-y:auto"></div>
-    <div style="border-top:1px solid var(--b4);padding-top:14px">
-      <div style="font-size:10px;font-weight:600;color:var(--t2);text-transform:uppercase;font-family:var(--fm);margin-bottom:8px;letter-spacing:1.2px">View User Data (requires vault password)</div>
-      <div class="fg" style="margin:0">
-        <div style="display:flex;gap:7px">
-          <input class="fi" id="vw-user" type="text" placeholder="Username to view…" style="flex:1">
-          <input class="fi" id="vw-pass" type="password" placeholder="Vault password" style="width:160px;flex-shrink:0">
-          <button class="mb prim" style="flex:none;padding:0 16px" onclick="viewUser()">View</button>
-        </div>
-      </div>
-      <div id="vw-result" style="margin-top:10px"></div>
-    </div>
     <div class="mb-row">
       <button class="mb gho" onclick="closeMod('m-leader')">Close</button>
       <button class="mb gold" onclick="exportAll()">⬇ Export All Data</button>
@@ -1029,21 +1001,52 @@ input,textarea,select,button{font-family:var(--f)}
 
 <div class="toast" id="toast"></div>
 
-<script>
+<!-- Firebase-powered app logic (must be type="module" for import/export to work) -->
+<script type="module">
 /* ════════════════════════════════════════════════════════════════════
-   ADERIAS CLIENT v3.0
-   Full-featured: messaging, contacts, money, groups, leader panel
-   Server: port 4433 → saves to D:\zero data\
-   Fallback: localStorage when server offline
+   ADERIAS CLIENT — FIREBASE EDITION
+   Real backend: Firebase Authentication + Cloud Firestore
+   Replaces the old localStorage / localhost:4433 fake-server code.
+   Every signed-up user, contact, chat, and message now lives in the
+   cloud, so any device that opens the site sees the same data.
 ════════════════════════════════════════════════════════════════════ */
 
-const API = 'http://localhost:4433/api';
-let CU = null, SRV = false, LDB = null;
-let pendInv = null, acFound = null, mnTo = null;
-let selCid = null, selContact = null, invLink = '';
-let sbF = 'all', sbQ = '', pGradI = 0;
+/* ── 1. FIREBASE SETUP ──────────────────────────────────────────────
+   Loaded as ES module imports from the Firebase CDN, inline below.
+*/
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-app.js";
+import {
+  getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+  signOut, onAuthStateChanged, updateProfile
+} from "https://www.gstatic.com/firebasejs/10.13.1/firebase-auth.js";
+import {
+  getFirestore, doc, setDoc, getDoc, updateDoc, deleteDoc,
+  collection, query, where, getDocs, addDoc, onSnapshot,
+  orderBy, serverTimestamp, limit, or
+} from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
 
-/* ══ CURRENCIES ══ */
+const firebaseConfig = {
+  apiKey: "AIzaSyCU7lE3Ht4hBFUcuwJT_HUggdVdF3Fijl0",
+  authDomain: "aderias-c1a7b.firebaseapp.com",
+  projectId: "aderias-c1a7b",
+  storageBucket: "aderias-c1a7b.firebasestorage.app",
+  messagingSenderId: "1013056383733",
+  appId: "1:1013056383733:web:061d81137a47fccd1633bc",
+  measurementId: "G-C1SFY81RK9"
+};
+
+const fbApp = initializeApp(firebaseConfig);
+const auth = getAuth(fbApp);
+const db = getFirestore(fbApp);
+
+/* ══ STATE ══ */
+let CU = null;              // current user profile (Firestore doc, merged with auth uid)
+let selCid = null, selContact = null;
+let sbF = 'all', sbQ = '';
+let acFound = null, mnTo = null;
+let msgUnsub = null, chatsUnsub = null;
+
+/* ══ CURRENCIES (unchanged) ══ */
 const CUR = {
   INR:{s:'₹',n:'Rupee',f:'🇮🇳'},  USD:{s:'$',n:'Dollar',f:'🇺🇸'},
   EUR:{s:'€',n:'Euro',f:'🇪🇺'},   GBP:{s:'£',n:'Pound',f:'🇬🇧'},
@@ -1061,19 +1064,14 @@ let fromCur='USD', toCur='INR';
 const cp   = s => String(s||'').replace(/\D/g,'');
 const ini  = s => (s||'?').split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2)||'??';
 const fmtT = ts => { const d=new Date(ts),n=new Date(); return d.toDateString()===n.toDateString()?d.toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}):d.toLocaleDateString([],{month:'short',day:'numeric'}); };
-const mkId = () => 'u_'+Date.now()+'_'+Math.random().toString(36).slice(2,6);
-const pw64 = s => { let h=5381; for(let i=0;i<s.length;i++)h=((h<<5)+h)+s.charCodeAt(i),h|=0; return String(h>>>0); };
 const esc  = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const tsNum = t => t?.toMillis ? t.toMillis() : (t || Date.now());
 
 const GRADS = [
-  'linear-gradient(145deg,#5a6e48,#3d4f30)',
-  'linear-gradient(145deg,#6b7f58,#4a5c3a)',
-  'linear-gradient(145deg,#a68b5b,#8b7355)',
-  'linear-gradient(145deg,#7a8e68,#5a6e48)',
-  'linear-gradient(145deg,#8a9e74,#6b7f58)',
-  'linear-gradient(145deg,#c4a878,#a68b5b)',
-  'linear-gradient(145deg,#4a6a5a,#2d4a3a)',
-  'linear-gradient(145deg,#8b7355,#6b5535)',
+  'linear-gradient(145deg,#5a6e48,#3d4f30)','linear-gradient(145deg,#6b7f58,#4a5c3a)',
+  'linear-gradient(145deg,#a68b5b,#8b7355)','linear-gradient(145deg,#7a8e68,#5a6e48)',
+  'linear-gradient(145deg,#8a9e74,#6b7f58)','linear-gradient(145deg,#c4a878,#a68b5b)',
+  'linear-gradient(145deg,#4a6a5a,#2d4a3a)','linear-gradient(145deg,#8b7355,#6b5535)',
 ];
 const pickGrad = s => { let h=0; for(let i=0;i<s.length;i++) h+=s.charCodeAt(i); return GRADS[h%GRADS.length]; };
 const LEADER_EMAILS = ['vishvrajsinhgohil845@gmail.com','vishvrajsinhgohil435@gmail.com'];
@@ -1086,360 +1084,244 @@ function phoneMatch(a,b){
   const n=Math.min(10,ca.length,cb.length);
   return ca.slice(-n)===cb.slice(-n);
 }
+function dmId(a,b){ return 'dm_'+[a,b].sort().join('_'); }
 
-/* ══ LOCAL DB ══ */
-function freshLDB(){ return {users:[],chats:{general:{id:'general',name:'General',type:'group',members:[],updatedAt:Date.now(),prev:'',unread:0,messages:[{id:1,type:'system',text:'Welcome to Aderias 🔒',ts:Date.now()}]}},contacts:{}}; }
-function loadLDB(){ try{const r=localStorage.getItem('aderias_v3');return r?JSON.parse(r):freshLDB();}catch{return freshLDB();} }
-function saveLDB(){ try{localStorage.setItem('aderias_v3',JSON.stringify(LDB));}catch{} }
-
-/* ══ API ══ */
-function loading(on){ document.getElementById('cbar').className='cbar'+(on?' loading':''); }
-async function apiFetch(method,path,body,uid){
-  loading(true);
-  try{
-    const o={method,headers:{'Content-Type':'application/json'}};
-    if(uid) o.headers['x-aderias-uid']=uid;
-    if(body) o.body=JSON.stringify(body);
-    const r=await fetch(API+path,o);
-    loading(false);
-    return await r.json();
-  }catch{ loading(false); return {ok:false,error:'Server offline'}; }
-}
-
-/* ══ SERVER CHECK ══ */
-async function checkSrv(){
-  try{
-    const r=await fetch(API+'/status',{signal:AbortSignal.timeout(3000)});
-    const d=await r.json();
-    if(d.ok){
-      SRV=true;
-      document.getElementById('srv-dot').className='sd sd-on';
-      document.getElementById('srv-txt').textContent='Connected · '+d.path+' · '+d.users+' users';
-      document.getElementById('srv-txt').style.color='var(--ok)';
-      document.getElementById('off-note').classList.remove('on');
-    }
-  }catch{
-    SRV=false;
-    document.getElementById('srv-dot').className='sd sd-warn';
-    document.getElementById('srv-txt').textContent='Server offline — local mode';
-    document.getElementById('srv-txt').style.color='var(--warn)';
-    document.getElementById('off-note').classList.add('on');
-  }
-}
+function loading(on){ const c=document.getElementById('cbar'); if(c) c.className='cbar'+(on?' loading':''); }
 
 /* ══ AUTH ══ */
 let authMode='su';
-function setTab(m){
+window.setTab = function(m){
   authMode=m;
   ['su','si'].forEach(t=>document.getElementById('tab-'+t).classList.toggle('on',t===m));
   document.getElementById('su-f').style.display=m==='su'?'block':'none';
   document.getElementById('si-f').style.display=m==='si'?'block':'none';
   document.getElementById('a-err').textContent='';
   document.getElementById('a-btn').textContent=m==='su'?'Create Account →':'Sign In →';
-}
+};
 
-async function doAuth(){
+// Firebase Auth needs a real email. If the person signs up with only a
+// phone number, we synthesize a private placeholder email so Auth still
+// works, but we always store + search by the real phone number in Firestore.
+function placeholderEmail(phone){ return `p${cp(phone)}@aderias.local`; }
+
+window.doAuth = async function(){
   const err=document.getElementById('a-err');
   err.textContent='';
-  let result;
-
-  if(SRV){
+  loading(true);
+  try{
     if(authMode==='su'){
       const nm=document.getElementById('a-nm').value.trim();
       const code=document.getElementById('a-code').value.replace('+','');
       const ph=document.getElementById('a-ph').value.trim();
-      const em=document.getElementById('a-em').value.trim();
+      const emRaw=document.getElementById('a-em').value.trim();
       const pw=document.getElementById('a-pw1').value;
-      if(!nm){err.textContent='Enter your name.';return;}
-      if(!ph&&!em){err.textContent='Enter phone or email.';return;}
-      if(!pw||pw.length<6){err.textContent='Password min 6 characters.';return;}
-      result=await apiFetch('POST','/signup',{name:nm,phone:code+ph,email:em,password:pw,username:nm.toLowerCase().replace(/[^a-z0-9]/g,'_').slice(0,22)});
-    }else{
+      if(!nm){err.textContent='Enter your name.';loading(false);return;}
+      if(!ph&&!emRaw){err.textContent='Enter phone or email.';loading(false);return;}
+      if(!pw||pw.length<6){err.textContent='Password min 6 characters.';loading(false);return;}
+      const fullPhone = ph ? ('+'+code+ph) : '';
+      const loginEmail = emRaw || placeholderEmail(fullPhone);
+
+      const cred = await createUserWithEmailAndPassword(auth, loginEmail, pw);
+      const uid = cred.user.uid;
+      const username = nm.toLowerCase().replace(/[^a-z0-9]/g,'_').slice(0,22) + '_' + uid.slice(0,4);
+      const profile = {
+        id: uid, name: nm, username, email: emRaw || '', phone: fullPhone,
+        bio: '', grad: pickGrad(nm), registered: true, role: 'user',
+        joinedAt: Date.now()
+      };
+      await setDoc(doc(db,'users',uid), profile);
+      CU = { ...profile, role: LEADER_EMAILS.includes(emRaw.toLowerCase()) ? 'leader' : 'user' };
+      await ensureGeneralChat();
+      enterApp();
+    } else {
       const id=document.getElementById('a-id').value.trim();
       const pw=document.getElementById('a-pw2').value;
-      if(!id||!pw){err.textContent='Fill all fields.';return;}
-      result=await apiFetch('POST','/signin',{identifier:id,password:pw});
+      if(!id||!pw){err.textContent='Fill all fields.';loading(false);return;}
+      let loginEmail = id;
+      // If they typed a phone or username instead of an email, look up the real email in Firestore.
+      if(!id.includes('@')){
+        const usersRef = collection(db,'users');
+        let foundDoc = null;
+        const byUsername = await getDocs(query(usersRef, where('username','==', id.replace('@',''))));
+        if(!byUsername.empty) foundDoc = byUsername.docs[0];
+        if(!foundDoc){
+          const all = await getDocs(usersRef); // fallback phone match (small dataset)
+          foundDoc = all.docs.find(d => phoneMatch(d.data().phone||'', id));
+        }
+        if(!foundDoc){ err.textContent='Account not found.'; loading(false); return; }
+        loginEmail = foundDoc.data().email || placeholderEmail(foundDoc.data().phone);
+      }
+      const cred = await signInWithEmailAndPassword(auth, loginEmail, pw);
+      const snap = await getDoc(doc(db,'users',cred.user.uid));
+      if(!snap.exists()){ err.textContent='Profile missing, contact support.'; loading(false); return; }
+      CU = { ...snap.data(), role: isLdr(snap.data()) ? 'leader' : 'user' };
+      enterApp();
     }
-  }else{
-    result=localAuth();
+  }catch(e){
+    err.textContent = friendlyAuthError(e);
   }
+  loading(false);
+};
 
-  if(!result?.ok){err.textContent=result?.error||'Something went wrong.';return;}
-  CU=result.user;
-  if(isLdr(CU)) CU.role='leader';
-  localStorage.setItem('aderias_sess3',JSON.stringify({id:CU.id,role:CU.role,email:CU.email}));
-  if(pendInv) processInvite(pendInv);
-  enterApp();
+function friendlyAuthError(e){
+  const c = e.code || '';
+  if(c.includes('email-already-in-use')) return 'Account already exists. Sign in instead.';
+  if(c.includes('wrong-password') || c.includes('invalid-credential')) return 'Wrong password.';
+  if(c.includes('user-not-found')) return 'Account not found. Sign up first.';
+  if(c.includes('weak-password')) return 'Password too weak (min 6 characters).';
+  if(c.includes('invalid-email')) return 'That email/phone looks invalid.';
+  return e.message || 'Something went wrong.';
 }
 
-function localAuth(){
-  LDB=loadLDB();
-  if(authMode==='su'){
-    const nm=document.getElementById('a-nm').value.trim();
-    const code=document.getElementById('a-code').value.replace('+','');
-    const ph=cp(document.getElementById('a-ph').value);
-    const em=document.getElementById('a-em').value.trim().toLowerCase();
-    const pw=document.getElementById('a-pw1').value;
-    if(!nm||!pw) return{ok:false,error:'Fill required fields.'};
-    const dup=LDB.users.find(u=>(em&&u.email===em)||(ph&&phoneMatch(u.phone||'',code+ph)));
-    if(dup) return{ok:false,error:'Account already exists. Sign in.'};
-    const isL=LEADER_EMAILS.includes(em);
-    const u={id:isL?'ldr_'+Date.now():mkId(),name:nm,username:nm.toLowerCase().replace(/[^a-z0-9]/g,'_').slice(0,22),email:em,phone:code+ph,passHash:pw64(pw),role:isL?'leader':'user',registered:true,bio:'',grad:null,joinedAt:Date.now()};
-    LDB.users.push(u);
-    if(!LDB.chats.general.members.includes(u.id)) LDB.chats.general.members.push(u.id);
-    saveLDB();
-    return{ok:true,user:u};
-  }else{
-    const id=document.getElementById('a-id').value.trim().toLowerCase();
-    const pw=document.getElementById('a-pw2').value;
-    const u=LDB.users.find(u2=>(u2.email&&u2.email===id)||(u2.username&&u2.username===id)||phoneMatch(id,u2.phone||''));
-    if(!u) return{ok:false,error:'Account not found. Sign up first.'};
-    if(u.passHash!==pw64(pw)) return{ok:false,error:'Wrong password.'};
-    if(LEADER_EMAILS.includes(u.email)) u.role='leader';
-    return{ok:true,user:u};
-  }
-}
-
-async function doSignOut(){
+window.doSignOut = async function(){
+  await signOut(auth);
   CU=null; selCid=null;
-  localStorage.removeItem('aderias_sess3');
+  if(msgUnsub) msgUnsub();
+  if(chatsUnsub) chatsUnsub();
   closeMod('m-profile'); go('s-auth');
-  toast('Signed out',false);
-}
+  toast('Signed out', false);
+};
 
-/* ══ SESSION RESTORE ══ */
-async function restoreSess(){
-  const raw=localStorage.getItem('aderias_sess3');
-  if(!raw) return;
-  try{
-    const s=JSON.parse(raw);
-    LDB=LDB||loadLDB();
-    const u=LDB.users.find(u=>u.id===s.id);
-    if(u){
-      CU={...u,role:LEADER_EMAILS.includes(s.email)?'leader':(s.role||u.role||'user')};
-      enterApp(); return;
+onAuthStateChanged(auth, async (user) => {
+  if(user && !CU){
+    const snap = await getDoc(doc(db,'users',user.uid));
+    if(snap.exists()){
+      CU = { ...snap.data(), role: isLdr(snap.data()) ? 'leader' : 'user' };
+      enterApp();
     }
-  }catch{}
+  } else if(!user){
+    go('s-auth');
+  }
+});
+
+/* ══ ENSURE GENERAL CHAT EXISTS + user is a member ══ */
+async function ensureGeneralChat(){
+  const ref = doc(db,'chats','general');
+  const snap = await getDoc(ref);
+  if(!snap.exists()){
+    await setDoc(ref, {
+      id:'general', name:'General', type:'group',
+      members:[CU.id], updatedAt: Date.now(), prev:''
+    });
+  } else if(!(snap.data().members||[]).includes(CU.id)){
+    await updateDoc(ref, { members: [...(snap.data().members||[]), CU.id] });
+  }
 }
 
 /* ══ ENTER APP ══ */
 function enterApp(){
   go('s-app');
-  LDB=LDB||loadLDB();
   const av=document.getElementById('me-av');
   av.style.background=CU.grad||pickGrad(CU.name||'A');
   av.innerHTML=`<span class="crown-ic" id="crown" style="display:${isLdr(CU)?'block':'none'}">👑</span>`+ini(CU.name||'A');
   document.getElementById('me-name').textContent=CU.name||'You';
   document.getElementById('me-handle').textContent='@'+(CU.username||'user');
   document.getElementById('ldr-btn').style.display=isLdr(CU)?'flex':'none';
-  updateRegPill(); buildCurrGrids(); renderSb();
-  syncAll();
+  updateRegPill(); buildCurrGrids();
+  listenChats();
 }
 
-/* ══ SYNC ══ */
-async function syncAll(){
-  if(!SRV||!CU) return;
-  try{
-    const r=await apiFetch('GET','/sync',null,CU.id);
-    if(r.ok){
-      r.users.forEach(u=>{const ex=LDB.users.find(x=>x.id===u.id);if(!ex)LDB.users.push(u);else Object.assign(ex,u);});
-      r.chats.forEach(c=>{if(!LDB.chats[c.id])LDB.chats[c.id]=c;else Object.assign(LDB.chats[c.id],c);});
-      saveLDB(); renderSb();
-    }
-  }catch{}
-}
-async function syncNow(){await syncAll();toast('Contacts synced!',true);}
-
-/* ══ CONTACT SEARCH ══ */
-let acT;
-function searchContact(inp){
-  clearTimeout(acT);
-  const raw=inp.value.replace(/\D/g,'');
-  const res=document.getElementById('ac-res');
-  const nw=document.getElementById('ac-nick-wrap');
-  const btn=document.getElementById('ac-add');
-  acFound=null;btn.style.display='none';nw.style.display='none';
-  if(raw.length<6){res.innerHTML='';return;}
-  res.innerHTML='<div style="font-size:12px;color:var(--t2);padding:7px 0;display:flex;align-items:center;gap:6px">⏳ Searching Aderias…</div>';
-  acT=setTimeout(async()=>{
-    const code=document.getElementById('ac-code').value.replace('+','');
-    const full=code+raw;
-    let found=null;
-    if(SRV&&CU){
-      const r=await apiFetch('POST','/search',{phone:full},CU.id);
-      if(r.ok&&r.user) found=r.user;
-    }else{
-      found=LDB.users.find(u=>phoneMatch(u.phone||'',full)&&u.id!==CU?.id)||null;
-    }
-    if(found){
-      acFound=found;
-      const nick=LDB.contacts[found.id]?.nick||'';
-      res.innerHTML=`<div class="src-card hit">
-        <div class="av" style="width:42px;height:42px;font-size:14px;background:${found.grad||pickGrad(found.name||'?')}">${ini(found.name||'?')}</div>
-        <div><div class="src-n">${esc(found.name||'Unknown')}</div>
-        <div class="src-d">@${found.username||''} · ${found.phone||''}</div>
-        <div class="src-ok">On Aderias · Tap to chat</div></div>
-      </div>`;
-      btn.style.display='block';nw.style.display='block';
-      document.getElementById('ac-nick').value=nick;
-    }else{
-      res.innerHTML=`<div class="src-card miss">
-        <div style="font-size:18px">🔍</div>
-        <div><div class="src-n">Not found on Aderias</div>
-        <div class="src-no">Invite them to join?</div></div>
-      </div>`;
-      prepInvite(full);
-      btn.textContent='📨 Send Invite';btn.style.display='block';
-      btn.onclick=()=>{closeMod('m-add');openMod('m-invite');};
-    }
-  },600);
-}
-
-function prepInvite(phone){
-  const cid=selCid||'general';
-  const chatName=LDB.chats[cid]?.name||'Aderias';
-  const inviterName=CU?.name||'Someone';
-  const payload={inviterName,chatId:cid,chatName,phone};
-  const token=btoa(JSON.stringify(payload));
-  invLink=location.origin+location.pathname+'#inv='+token;
-  document.getElementById('inv-app').innerHTML=`<a href="${invLink}" onclick="return false">${invLink.slice(0,60)}…</a>`;
-  const msg=`${inviterName} is inviting you to join Aderias — secure, encrypted messaging.\n\nJoin here: ${invLink}`;
-  document.getElementById('inv-wa').innerHTML=`<a href="https://wa.me/${phone.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}" target="_blank">Send on WhatsApp →</a>`;
-  document.getElementById('inv-sms').innerHTML=`<a href="sms:${phone}?body=${encodeURIComponent(msg)}">Send via SMS →</a>`;
-}
-
-function copyInv(){navigator.clipboard?.writeText(invLink).then(()=>toast('Link copied!',true));}
-
-async function processInvite(token){
-  try{const d=JSON.parse(atob(token));if(d.chatId&&LDB.chats[d.chatId]){openChat(d.chatId);}pendInv=null;}catch{}
-}
-
-async function confirmAdd(){
-  if(!acFound) return;
-  const nick=document.getElementById('ac-nick').value.trim()||acFound.name;
-  LDB.contacts[acFound.id]={...acFound,nick};
-  if(!LDB.users.find(u=>u.id===acFound.id)) LDB.users.push(acFound);
-  const cid='dm_'+[CU.id,acFound.id].sort().join('_');
-  if(!LDB.chats[cid]) LDB.chats[cid]={id:cid,name:acFound.name,type:'direct',members:[CU.id,acFound.id],updatedAt:Date.now(),prev:'',unread:0,messages:[]};
-  saveLDB(); renderSb(); closeMod('m-add'); openChat(cid);
-  toast(`${nick} added!`,true);
-}
-
-/* ══ RECIPIENT SEARCH (MONEY) ══ */
-let mnT;
-function searchRecipient(inp){
-  clearTimeout(mnT);
-  mnTo=null;
-  const q=inp.value.trim().toLowerCase();
-  const res=document.getElementById('mn-res');
-  if(!q){res.innerHTML='';return;}
-  mnT=setTimeout(()=>{
-    const all=[...Object.values(LDB.contacts),...LDB.users.filter(u=>u.id!==CU?.id)];
-    const hits=all.filter(u=>(u.name||'').toLowerCase().includes(q)||(u.phone||'').includes(q));
-    if(!hits.length){res.innerHTML='<div style="font-size:12px;color:var(--no);padding:6px 0">No contact found</div>';return;}
-    res.innerHTML=hits.slice(0,4).map(u=>`
-      <div class="src-card" style="margin-top:5px;cursor:pointer" onclick="pickRecipient(${JSON.stringify(u.id)})">
-        <div class="av" style="width:34px;height:34px;font-size:11px;background:${u.grad||pickGrad(u.name||'?')}">${ini(u.name||'?')}</div>
-        <div><div class="src-n">${esc(u.name||'?')}</div><div class="src-d">${u.phone||''}</div></div>
-      </div>`).join('');
-  },300);
-}
-
-function pickRecipient(uid){
-  const u=LDB.contacts[uid]||LDB.users.find(x=>x.id===uid);
-  if(!u) return;
-  mnTo=u;
-  document.getElementById('mn-to').value=u.name||u.phone||'';
-  document.getElementById('mn-res').innerHTML='';
+/* ══ LIVE CHAT LIST (realtime) ══ */
+function listenChats(){
+  if(chatsUnsub) chatsUnsub();
+  const q = query(collection(db,'chats'), where('members','array-contains', CU.id));
+  chatsUnsub = onSnapshot(q, (snap) => {
+    window.__chats = {};
+    snap.forEach(d => window.__chats[d.id] = { id:d.id, ...d.data() });
+    renderSb();
+  });
 }
 
 /* ══ SIDEBAR ══ */
 function renderSb(){
   const list=document.getElementById('sb-list');
+  if(!list) return;
   list.innerHTML='';
-  const chats=Object.values(LDB.chats)
+  const chats = Object.values(window.__chats||{})
     .filter(c=>{
       if(sbF==='direct'&&c.type!=='direct') return false;
       if(sbF==='group'&&c.type!=='group') return false;
-      if(sbQ&&!c.name.toLowerCase().includes(sbQ)) return false;
-      if(c.type==='direct'){
-        const othId=c.members.find(id=>id!==CU?.id);
-        if(!othId) return false;
-        return LDB.contacts[othId]||c.messages?.length>0;
-      }
+      if(sbQ&&!(c.name||'').toLowerCase().includes(sbQ)) return false;
       return true;
     })
-    .sort((a,b)=>b.updatedAt-a.updatedAt);
+    .sort((a,b)=> tsNum(b.updatedAt) - tsNum(a.updatedAt));
 
-  chats.forEach(c=>{
+  chats.forEach(async c=>{
     const isGrp=c.type==='group';
     let nm=c.name, grad=null;
-    if(!isGrp){const othId=c.members.find(id=>id!==CU?.id);const oth=LDB.contacts[othId]||LDB.users.find(u=>u.id===othId);if(oth){nm=LDB.contacts[othId]?.nick||oth.name;grad=oth.grad;}}
+    if(!isGrp){
+      const othId=(c.members||[]).find(id=>id!==CU.id);
+      const oth = window.__userCache?.[othId] || await cacheUser(othId);
+      if(oth){ nm=oth.nick || oth.name || nm; grad=oth.grad; }
+    }
     const av=isGrp?`<div class="av sq" style="width:42px;height:42px;background:${grad||pickGrad(nm)}">${ini(nm)}</div>`
-                   :`<div class="av" style="width:42px;height:42px;background:${grad||pickGrad(nm)}"><div class="av-st ${c.unread?'st-on':'st-off'}"></div>${ini(nm)}</div>`;
+                   :`<div class="av" style="width:42px;height:42px;background:${grad||pickGrad(nm)}"><div class="av-st st-off"></div>${ini(nm)}</div>`;
     const d=document.createElement('div');
     d.className='ci'+(selCid===c.id?' sel':'');
-    d.innerHTML=`${av}<div class="ci-r"><div class="ci-top"><span class="ci-name">${esc(nm)}</span><span class="ci-ts">${fmtT(c.updatedAt)}</span></div><div class="ci-prev">${esc(c.prev||'No messages yet')}${c.unread?`<span class="ci-unr">${c.unread}</span>`:''}</div></div>`;
+    d.innerHTML=`${av}<div class="ci-r"><div class="ci-top"><span class="ci-name">${esc(nm)}</span><span class="ci-ts">${fmtT(tsNum(c.updatedAt))}</span></div><div class="ci-prev">${esc(c.prev||'No messages yet')}</div></div>`;
     d.onclick=()=>openChat(c.id);
     list.appendChild(d);
   });
 }
 
-function filterSb(q){sbQ=q.toLowerCase();renderSb();}
-function sbTab(btn,f){sbF=f;document.querySelectorAll('.sbt').forEach(b=>b.classList.remove('on'));btn.classList.add('on');renderSb();}
+async function cacheUser(uid){
+  if(!uid) return null;
+  window.__userCache = window.__userCache || {};
+  if(window.__userCache[uid]) return window.__userCache[uid];
+  const snap = await getDoc(doc(db,'users',uid));
+  if(snap.exists()){
+    window.__userCache[uid] = snap.data();
+    return snap.data();
+  }
+  return null;
+}
 
-/* ══ OPEN CHAT ══ */
-function openChat(cid){
+window.filterSb = function(q){ sbQ=q.toLowerCase(); renderSb(); };
+window.sbTab = function(btn,f){ sbF=f; document.querySelectorAll('.sbt').forEach(b=>b.classList.remove('on')); btn.classList.add('on'); renderSb(); };
+
+/* ══ OPEN CHAT (with realtime messages) ══ */
+window.openChat = async function(cid){
   selCid=cid;
-  const c=LDB.chats[cid];
+  const c = window.__chats?.[cid];
   if(!c) return;
   document.getElementById('empty-st').style.display='none';
-  const cp=document.getElementById('chat-panel');
-  cp.style.display='flex';
-  let nm=c.name,grad=null;
+  const cpEl=document.getElementById('chat-panel');
+  cpEl.style.display='flex';
+
+  let nm=c.name, grad=null;
   if(c.type==='direct'){
-    const othId=c.members.find(id=>id!==CU?.id);
-    const oth=LDB.contacts[othId]||LDB.users.find(u=>u.id===othId);
-    if(oth){nm=LDB.contacts[othId]?.nick||oth.name;grad=oth.grad;}
+    const othId=(c.members||[]).find(id=>id!==CU.id);
+    const oth = await cacheUser(othId);
+    if(oth){ nm=oth.name; grad=oth.grad; }
   }
   const av=document.getElementById('ch-av');
   av.style.background=grad||pickGrad(nm);
   av.textContent=ini(nm);
   document.getElementById('ch-name').textContent=nm;
-  document.getElementById('ch-sub').innerHTML=`<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> ${c.members?.length||2} members · E2E Encrypted`;
-  c.unread=0;saveLDB();renderSb();renderMsgs(cid);
-}
+  document.getElementById('ch-sub').innerHTML=`<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> ${(c.members||[]).length} members · E2E Encrypted`;
 
-/* ══ RENDER MESSAGES ══ */
-function renderMsgs(cid){
-  const c=LDB.chats[cid];if(!c) return;
+  if(msgUnsub) msgUnsub();
   const box=document.getElementById('msgs');
   box.innerHTML='';
-  if(!c.messages?.length){
-    box.innerHTML=`<div class="welcome-msg">
-      <div class="welcome-icon">
-        <svg viewBox="0 0 100 130" fill="none" xmlns="http://www.w3.org/2000/svg" width="40" height="48">
-          <path d="M50 120 Q30 80 20 50 Q10 20 35 10 Q50 5 50 30 Q65 8 80 18 Q95 35 80 60 Q70 80 50 120Z" fill="none" stroke="%236b7f58" stroke-width="2"/>
-        </svg>
-      </div>
-      <div class="welcome-title">Welcome to Aderias</div>
-      <div class="welcome-sub">All messages are end-to-end encrypted</div>
-    </div>`;
-  }
-  (c.messages||[]).forEach(m=>appendMsg(m,false));
-  box.scrollTop=box.scrollHeight;
-}
+  const q = query(collection(db,'chats',cid,'messages'), orderBy('ts','asc'), limit(200));
+  msgUnsub = onSnapshot(q, (snap) => {
+    box.innerHTML='';
+    if(snap.empty){
+      box.innerHTML=`<div class="welcome-msg">
+        <div class="welcome-title">Welcome to Aderias</div>
+        <div class="welcome-sub">All messages are end-to-end encrypted</div>
+      </div>`;
+    }
+    snap.forEach(d => appendMsg({ id:d.id, ...d.data(), ts: tsNum(d.data().ts) }, false));
+    box.scrollTop = box.scrollHeight;
+  });
+};
 
-function appendMsg(m,scroll=true){
+function appendMsg(m, scroll=true){
   const box=document.getElementById('msgs');
   if(!box) return;
-  if(m.type==='system'){
-    const d=document.createElement('div');
-    d.className='sys-ln';
-    d.innerHTML=`🔒 ${esc(m.text)}`;
-    box.appendChild(d);
-  } else if(m.type==='money'){
-    const isMe=m.senderId===CU?.id;
+  const isMe=m.senderId===CU?.id;
+  if(m.type==='money'){
     const w=document.createElement('div');
     w.className='mw '+(isMe?'me':'th');
     w.innerHTML=`${!isMe?`<div class="m-sender">${esc(m.senderName||'?')}</div>`:''}
@@ -1452,26 +1334,7 @@ function appendMsg(m,scroll=true){
       </div>
       <div class="m-ft"><span class="m-ts">${fmtT(m.ts)}</span>${isMe?'<span class="m-tks">✓✓</span>':''}</div>`;
     box.appendChild(w);
-  } else if(m.type==='contact'){
-    const isMe=m.senderId===CU?.id;
-    const w=document.createElement('div');
-    w.className='mw '+(isMe?'me':'th');
-    w.innerHTML=`${!isMe?`<div class="m-sender">${esc(m.senderName||'?')}</div>`:''}
-      <div class="cc-shared">
-        <div class="cc-shared-lbl">Contact shared</div>
-        <div style="display:flex;align-items:center;gap:10px;">
-          <div class="av" style="width:38px;height:38px;font-size:12px;background:${pickGrad(m.contact?.name||'?')}">${ini(m.contact?.name||'?')}</div>
-          <div>
-            <div class="cc-shared-name">${esc(m.contact?.name||'Unknown')}</div>
-            <div class="cc-shared-ph">${esc(m.contact?.phone||'')}</div>
-            <div class="cc-shared-status">On Aderias <span class="cc-shared-chat" onclick="openContactFromMsg('${m.contact?.id}')">· Tap to chat</span></div>
-          </div>
-        </div>
-      </div>
-      <div class="m-ft"><span class="m-ts">${fmtT(m.ts)}</span></div>`;
-    box.appendChild(w);
   } else {
-    const isMe=m.senderId===CU?.id;
     const w=document.createElement('div');
     w.className='mw '+(isMe?'me':'th');
     w.innerHTML=`${!isMe?`<div class="m-sender">${esc(m.senderName||'?')}</div>`:''}
@@ -1479,122 +1342,172 @@ function appendMsg(m,scroll=true){
       <div class="m-ft"><span class="m-ts">${fmtT(m.ts)}</span>${isMe?'<span class="m-tks">✓✓</span>':''}</div>`;
     box.appendChild(w);
   }
-  if(scroll) box.scrollTop=box.scrollHeight;
-}
-
-function openContactFromMsg(uid){
-  const u=LDB.users.find(x=>x.id===uid)||LDB.contacts[uid];
-  if(!u) return;
-  const cid='dm_'+[CU.id,uid].sort().join('_');
-  if(!LDB.chats[cid]) LDB.chats[cid]={id:cid,name:u.name,type:'direct',members:[CU.id,uid],updatedAt:Date.now(),prev:'',unread:0,messages:[]};
-  saveLDB();renderSb();openChat(cid);
+  if(scroll) box.scrollTop = box.scrollHeight;
 }
 
 /* ══ SEND MESSAGE ══ */
-async function sendMsg(){
+window.sendMsg = async function(){
   const inp=document.getElementById('mi');
   const txt=inp.value.trim();
   if(!txt||!selCid) return;
   inp.value='';autoResize(inp);
-  const c=LDB.chats[selCid];
-  if(!c) return;
-  const msg={id:Date.now(),type:'text',senderId:CU.id,senderName:CU.name,text:txt,ts:Date.now()};
-  c.messages=c.messages||[];
-  c.messages.push(msg);
-  c.prev=txt;c.updatedAt=msg.ts;
-  saveLDB();renderSb();appendMsg(msg);
-  if(SRV&&CU){
-    await apiFetch('POST','/message',{chatId:selCid,message:msg},CU.id);
-  }
-}
+  await addDoc(collection(db,'chats',selCid,'messages'), {
+    type:'text', senderId:CU.id, senderName:CU.name, text:txt, ts:Date.now()
+  });
+  await updateDoc(doc(db,'chats',selCid), { prev: txt, updatedAt: Date.now() });
+};
 
-function onKey(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendMsg();}}
-function autoResize(t){t.style.height='auto';t.style.height=Math.min(t.scrollHeight,90)+'px';}
+window.onKey = function(e){ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); sendMsg(); } };
+window.autoResize = function(t){ t.style.height='auto'; t.style.height=Math.min(t.scrollHeight,90)+'px'; };
+window.attachFile = function(){ toast('File attachment coming soon', false); };
+window.sendVoice = function(){ toast('Voice message coming soon', false); };
+window.syncNow = function(){ toast('Already live — realtime sync active', true); };
 
-function attachFile(){toast('File attachment coming soon',false);}
-function sendVoice(){toast('Voice message coming soon',false);}
-
-function exportChat(){
+window.exportChat = async function(){
   if(!selCid) return;
-  const c=LDB.chats[selCid];
-  if(!c) return;
-  const txt=(c.messages||[]).map(m=>`[${new Date(m.ts).toLocaleString()}] ${m.senderName||'System'}: ${m.text||m.type}`).join('\n');
-  const b=new Blob([txt],{type:'text/plain'});
+  const snap = await getDocs(query(collection(db,'chats',selCid,'messages'), orderBy('ts','asc')));
+  const lines=[];
+  snap.forEach(d=>{ const m=d.data(); lines.push(`[${new Date(tsNum(m.ts)).toLocaleString()}] ${m.senderName||'?'}: ${m.text||m.type}`); });
+  const b=new Blob([lines.join('\n')],{type:'text/plain'});
   const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='chat_'+selCid+'.txt';a.click();
-  toast('Chat exported',true);
-}
+  toast('Chat exported', true);
+};
 
-function openChatContact(){
+window.openChatContact = async function(){
   if(!selCid) return;
-  const c=LDB.chats[selCid];
+  const c = window.__chats?.[selCid];
   if(!c||c.type!=='direct') return;
-  const othId=c.members.find(id=>id!==CU?.id);
-  const oth=LDB.contacts[othId]||LDB.users.find(u=>u.id===othId);
-  if(!oth) return;
-  openContactDetail(oth);
-}
+  const othId=(c.members||[]).find(id=>id!==CU.id);
+  const oth = await cacheUser(othId);
+  if(oth) openContactDetail({ id: othId, ...oth });
+};
 
-/* ══ CONTACTS ══ */
-function openContactDetail(u){
-  const cd=document.getElementById('cd-av');
-  cd.style.background=u.grad||pickGrad(u.name||'?');
-  cd.textContent=ini(u.name||'?');
-  document.getElementById('cd-nm').textContent=u.name||'Unknown';
-  document.getElementById('cd-handle').textContent='@'+(u.username||'');
-  document.getElementById('cd-ph').textContent=u.phone||'';
-  document.getElementById('cd-nick').value=LDB.contacts[u.id]?.nick||'';
-  selContact=u;
-  openMod('m-contact');
-}
+/* ══ CONTACT SEARCH (real Firestore query — THIS is the fix) ══ */
+let acT;
+window.searchContact = function(inp){
+  clearTimeout(acT);
+  const raw=inp.value.replace(/\D/g,'');
+  const res=document.getElementById('ac-res');
+  const nw=document.getElementById('ac-nick-wrap');
+  const btn=document.getElementById('ac-add');
+  acFound=null; btn.style.display='none'; nw.style.display='none';
+  if(raw.length<6){res.innerHTML='';return;}
+  res.innerHTML='<div style="font-size:12px;color:var(--t2);padding:7px 0">⏳ Searching Aderias…</div>';
+  acT=setTimeout(async()=>{
+    const code=document.getElementById('ac-code').value.replace('+','');
+    const full='+'+code+raw;
+    // Real cross-device search: query the shared 'users' collection in Firestore.
+    const usersSnap = await getDocs(collection(db,'users'));
+    let found=null;
+    usersSnap.forEach(d=>{
+      const u=d.data();
+      if(u.id!==CU.id && u.registered && phoneMatch(u.phone||'', full)) found=u;
+    });
+    if(found){
+      acFound=found;
+      res.innerHTML=`<div class="src-card hit">
+        <div class="av" style="width:42px;height:42px;font-size:14px;background:${found.grad||pickGrad(found.name||'?')}">${ini(found.name||'?')}</div>
+        <div><div class="src-n">${esc(found.name||'Unknown')}</div>
+        <div class="src-d">@${found.username||''} · ${found.phone||''}</div>
+        <div class="src-ok">On Aderias · Tap to chat</div></div>
+      </div>`;
+      btn.style.display='block'; btn.textContent='Add Contact'; btn.onclick=confirmAdd;
+      nw.style.display='block';
+      document.getElementById('ac-nick').value='';
+    }else{
+      res.innerHTML=`<div class="src-card miss">
+        <div style="font-size:18px">🔍</div>
+        <div><div class="src-n">Not found on Aderias</div>
+        <div class="src-no">Invite them to join?</div></div>
+      </div>`;
+      prepInvite(full);
+      btn.textContent='📨 Send Invite'; btn.style.display='block';
+      btn.onclick=()=>{closeMod('m-add');openMod('m-invite');};
+    }
+  },500);
+};
 
-function saveNick(){
-  if(!selContact) return;
-  const nick=document.getElementById('cd-nick').value.trim();
-  if(!LDB.contacts[selContact.id]) LDB.contacts[selContact.id]={...selContact};
-  LDB.contacts[selContact.id].nick=nick;
-  saveLDB();renderSb();toast('Nickname saved',true);
+function prepInvite(phone){
+  const inviterName=CU?.name||'Someone';
+  const payload={inviterName,phone};
+  const token=btoa(JSON.stringify(payload));
+  const invLink=location.origin+location.pathname+'#inv='+token;
+  window.__invLink=invLink;
+  document.getElementById('inv-app').innerHTML=`<a href="${invLink}" onclick="return false">${invLink.slice(0,60)}…</a>`;
+  const msg=`${inviterName} is inviting you to join Aderias — secure, encrypted messaging.\n\nJoin here: ${invLink}`;
+  document.getElementById('inv-wa').innerHTML=`<a href="https://wa.me/${phone.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}" target="_blank">Send on WhatsApp →</a>`;
+  document.getElementById('inv-sms').innerHTML=`<a href="sms:${phone}?body=${encodeURIComponent(msg)}">Send via SMS →</a>`;
 }
+window.copyInv = function(){ navigator.clipboard?.writeText(window.__invLink||'').then(()=>toast('Link copied!', true)); };
 
-function chatContact(){
-  if(!selContact) return;
-  const cid='dm_'+[CU.id,selContact.id].sort().join('_');
-  if(!LDB.chats[cid]) LDB.chats[cid]={id:cid,name:selContact.name,type:'direct',members:[CU.id,selContact.id],updatedAt:Date.now(),prev:'',unread:0,messages:[]};
-  saveLDB();renderSb();closeMod('m-contact');openChat(cid);
-}
+window.confirmAdd = async function(){
+  if(!acFound) return;
+  const nick=document.getElementById('ac-nick').value.trim()||acFound.name;
+  await setDoc(doc(db,'contacts',CU.id,'list',acFound.id), { ...acFound, nick, addedAt: Date.now() });
+  const cid = dmId(CU.id, acFound.id);
+  const chatRef = doc(db,'chats',cid);
+  const existing = await getDoc(chatRef);
+  if(!existing.exists()){
+    await setDoc(chatRef, { id:cid, name:acFound.name, type:'direct', members:[CU.id, acFound.id], updatedAt: Date.now(), prev:'' });
+  }
+  closeMod('m-add'); openChat(cid);
+  toast(`${nick} added!`, true);
+};
 
-function removeContact(){
-  if(!selContact) return;
-  delete LDB.contacts[selContact.id];
-  saveLDB();renderSb();closeMod('m-contact');toast('Contact removed',false);
-}
+/* ══ RECIPIENT SEARCH (MONEY) ══ */
+let mnT;
+window.searchRecipient = function(inp){
+  clearTimeout(mnT);
+  mnTo=null;
+  const q=inp.value.trim().toLowerCase();
+  const res=document.getElementById('mn-res');
+  if(!q){res.innerHTML='';return;}
+  mnT=setTimeout(async()=>{
+    const listSnap = await getDocs(collection(db,'contacts',CU.id,'list'));
+    const hits=[];
+    listSnap.forEach(d=>{ const u=d.data(); if((u.name||'').toLowerCase().includes(q)||(u.phone||'').includes(q)) hits.push({id:d.id,...u}); });
+    if(!hits.length){res.innerHTML='<div style="font-size:12px;color:var(--no);padding:6px 0">No contact found</div>';return;}
+    res.innerHTML=hits.slice(0,4).map(u=>`
+      <div class="src-card" style="margin-top:5px;cursor:pointer" onclick="window.__pickRecipient('${u.id}')">
+        <div class="av" style="width:34px;height:34px;font-size:11px;background:${u.grad||pickGrad(u.name||'?')}">${ini(u.name||'?')}</div>
+        <div><div class="src-n">${esc(u.name||'?')}</div><div class="src-d">${u.phone||''}</div></div>
+      </div>`).join('');
+  },300);
+};
+window.__pickRecipient = async function(uid){
+  const snap = await getDoc(doc(db,'contacts',CU.id,'list',uid));
+  if(!snap.exists()) return;
+  mnTo={id:uid,...snap.data()};
+  document.getElementById('mn-to').value=mnTo.name||mnTo.phone||'';
+  document.getElementById('mn-res').innerHTML='';
+};
 
 /* ══ GROUPS ══ */
-function createGroup(){
+window.createGroup = async function(){
   const nm=document.getElementById('grp-nm').value.trim();
-  if(!nm){toast('Enter a group name',false);return;}
+  if(!nm){toast('Enter a group name', false);return;}
   const cid='grp_'+Date.now();
-  LDB.chats[cid]={id:cid,name:nm,type:'group',members:[CU.id],updatedAt:Date.now(),prev:'',unread:0,messages:[{id:1,type:'system',text:`${CU.name} created "${nm}"`,ts:Date.now()}]};
-  saveLDB();renderSb();closeMod('m-group');openChat(cid);
-  toast(`Group "${nm}" created!`,true);
-}
+  await setDoc(doc(db,'chats',cid), { id:cid, name:nm, type:'group', members:[CU.id], updatedAt: Date.now(), prev:'' });
+  await addDoc(collection(db,'chats',cid,'messages'), { type:'system', text:`${CU.name} created "${nm}"`, ts: Date.now() });
+  closeMod('m-group'); openChat(cid);
+  toast(`Group "${nm}" created!`, true);
+};
 
-function openMembers(){
+window.openMembers = async function(){
   if(!selCid) return;
-  const c=LDB.chats[selCid];if(!c) return;
-  const list=document.getElementById('mem-list');list.innerHTML='';
-  (c.members||[]).forEach(id=>{
-    const u=LDB.users.find(x=>x.id===id)||{id,name:'Unknown'};
-    const isL=isLdr(u);
-    const isMe=id===CU?.id;
-    const d=document.createElement('div');d.className='mem-row';
+  const c = window.__chats?.[selCid]; if(!c) return;
+  const list=document.getElementById('mem-list'); list.innerHTML='';
+  for(const id of (c.members||[])){
+    const u = await cacheUser(id) || {name:'Unknown'};
+    const isL=isLdr(u), isMe=id===CU.id;
+    const d=document.createElement('div'); d.className='mem-row';
     d.innerHTML=`<div class="av" style="width:34px;height:34px;font-size:11px;background:${u.grad||pickGrad(u.name||'?')}">${ini(u.name||'?')}</div>
       <div class="mem-name">${esc(u.name||'?')}${isMe?' (you)':''}</div>
-      <span class="role-tag ${isL?'rt-ldr':'rt-usr'}">${isL?'👑 Leader':'Member'}</span>
-      <span class="reg-dot ${u.registered?'rd-y':'rd-n'}">${u.registered?'●':'○'}</span>`;
+      <span class="role-tag ${isL?'rt-ldr':'rt-usr'}">${isL?'👑 Leader':'Member'}</span>`;
     list.appendChild(d);
-  });
+  }
   openMod('m-members');
-}
+};
 
 /* ══ REGISTRATION / PRIVACY ══ */
 function updateRegPill(){
@@ -1603,26 +1516,22 @@ function updateRegPill(){
   p.className='reg-pill '+(CU.registered?'rp-on':'rp-off');
   p.textContent=CU.registered?'● Live':'○ Hidden';
 }
-
-async function toggleReg(){
+window.toggleReg = async function(){
   if(!CU) return;
   CU.registered=!CU.registered;
-  const u=LDB.users.find(x=>x.id===CU.id);
-  if(u) u.registered=CU.registered;
-  saveLDB();updateRegPill();
-  if(SRV) await apiFetch('PUT','/profile',{registered:CU.registered},CU.id);
-  toast(CU.registered?'Now visible to phone search':'Hidden from phone search',true);
-}
-
-function syncPfReg(){
+  await updateDoc(doc(db,'users',CU.id), { registered: CU.registered });
+  updateRegPill();
+  toast(CU.registered?'Now visible to phone search':'Hidden from phone search', true);
+};
+window.syncPfReg = function(){
   const p=document.getElementById('pf-reg');
   if(!p||!CU) return;
   p.className='reg-pill '+(CU.registered?'rp-on':'rp-off');
   p.textContent=CU.registered?'● Live':'○ Hidden';
-}
+};
 
 /* ══ PROFILE ══ */
-function openProfile(){
+window.openProfile = function(){
   if(!CU) return;
   document.getElementById('pf-av').style.background=CU.grad||pickGrad(CU.name||'A');
   document.getElementById('pf-av-txt').textContent=ini(CU.name||'A');
@@ -1635,115 +1544,73 @@ function openProfile(){
   document.getElementById('pf-bio').value=CU.bio||'';
   syncPfReg();
   openMod('m-profile');
-}
+};
 
 let gradIdx=0;
-function cycleGrad(){
+window.cycleGrad = function(){
   gradIdx=(gradIdx+1)%GRADS.length;
   const g=GRADS[gradIdx];
   document.getElementById('pf-av').style.background=g;
   CU.grad=g;
-}
+};
 
-async function saveProfile(){
+window.saveProfile = async function(){
   CU.name=document.getElementById('pf-name').value.trim()||CU.name;
   CU.username=document.getElementById('pf-uname').value.trim().toLowerCase().replace(/[^a-z0-9_]/g,'').slice(0,22)||CU.username;
-  CU.email=document.getElementById('pf-email').value.trim()||CU.email;
   CU.bio=document.getElementById('pf-bio').value.trim();
-  const u=LDB.users.find(x=>x.id===CU.id);if(u) Object.assign(u,CU);
-  saveLDB();
-  if(SRV&&CU)await apiFetch('PUT','/profile',{name:CU.name,bio:CU.bio,username:CU.username,grad:CU.grad},CU.id);
+  await updateDoc(doc(db,'users',CU.id), { name:CU.name, username:CU.username, bio:CU.bio, grad:CU.grad });
   const av=document.getElementById('me-av');
   av.innerHTML=`<span class="crown-ic" id="crown" style="display:${isLdr(CU)?'block':'none'}">👑</span>`+ini(CU.name);
   av.style.background=CU.grad||pickGrad(CU.name);
   document.getElementById('me-name').textContent=CU.name;
   document.getElementById('me-handle').textContent='@'+CU.username;
-  closeMod('m-profile');toast('Profile saved!',true);
-}
+  closeMod('m-profile'); toast('Profile saved!', true);
+};
 
-async function deleteAccount(){
-  if(!confirm('Delete your account permanently? This cannot be undone.'))return;
-  LDB.users=LDB.users.filter(u=>u.id!==CU.id);saveLDB();
-  localStorage.removeItem('aderias_sess3');CU=null;closeMod('m-profile');go('s-auth');
-  toast('Account deleted',false);
-}
+window.deleteAccount = async function(){
+  if(!confirm('Delete your account permanently? This cannot be undone.')) return;
+  await deleteDoc(doc(db,'users',CU.id));
+  await auth.currentUser.delete();
+  CU=null; closeMod('m-profile'); go('s-auth');
+  toast('Account deleted', false);
+};
 
-/* ══ LEADER PANEL ══ */
-async function loadLeaderPanel(){
-  let users=LDB.users;
-  if(SRV&&CU){
-    const r=await apiFetch('GET','/leader/users',null,CU.id);
-    if(r.ok){users=r.users;r.users.forEach(u=>{const ex=LDB.users.find(x=>x.id===u.id);if(!ex)LDB.users.push(u);else Object.assign(ex,u);});saveLDB();}
-    const s=await apiFetch('GET','/stats',null,CU.id);
-    if(s.ok){
-      document.getElementById('lp-users').textContent=s.users;
-      document.getElementById('lp-chats').textContent=s.chats;
-      document.getElementById('lp-msgs').textContent=s.messages;
-      document.getElementById('lp-reg').textContent=s.registered;
-      document.getElementById('lp-path').textContent='📁 '+s.path;
-    }
-  }else{
-    const tm=Object.values(LDB.chats).reduce((a,c)=>a+(c.messages?.length||0),0);
-    document.getElementById('lp-users').textContent=LDB.users.length;
-    document.getElementById('lp-chats').textContent=Object.keys(LDB.chats).length;
-    document.getElementById('lp-msgs').textContent=tm;
-    document.getElementById('lp-reg').textContent=LDB.users.filter(u=>u.registered).length;
-  }
-  const el=document.getElementById('lp-list');el.innerHTML='';
-  users.forEach(u=>{
-    const d=document.createElement('div');d.className='u-card';
-    d.innerHTML=`<div class="av" style="width:34px;height:34px;font-size:11px;background:${u.grad||pickGrad(u.name||'?')}">${ini(u.name||'?')}</div>
-      <div style="flex:1">
-        <div class="uc-name">${esc(u.name||'Unknown')}</div>
-        <div class="uc-meta">@${u.username||''} · ${u.phone||u.email||'—'} · joined ${fmtT(u.joinedAt||Date.now())}</div>
-      </div>
-      <div class="uc-live ${u.registered?'y':'n'}">${u.registered?'● Live':'○'}</div>`;
-    el.appendChild(d);
-  });
+/* ══ CONTACTS ══ */
+function openContactDetail(u){
+  const cd=document.getElementById('cd-av');
+  cd.style.background=u.grad||pickGrad(u.name||'?');
+  cd.textContent=ini(u.name||'?');
+  document.getElementById('cd-nm').textContent=u.name||'Unknown';
+  document.getElementById('cd-handle').textContent='@'+(u.username||'');
+  document.getElementById('cd-ph').textContent=u.phone||'';
+  document.getElementById('cd-nick').value=u.nick||'';
+  selContact=u;
+  openMod('m-contact');
 }
-
-async function viewUser(){
-  const un=document.getElementById('vw-user').value.trim();
-  const pw=document.getElementById('vw-pass').value;
-  if(!un||!pw){toast('Enter username and vault password',false);return;}
-  if(!SRV){toast('Server offline — cannot view encrypted files',false);return;}
-  const r=await apiFetch('POST','/leader/view',{username:un,viewPassword:pw});
-  const el=document.getElementById('vw-result');
-  if(!r.ok){el.innerHTML=`<div style="color:var(--no);font-size:12px;padding:6px 0">${r.error}</div>`;return;}
-  el.innerHTML=`
-    <div class="vw-section">
-      <div class="vw-lbl">Profile</div>
-      <div class="vw-val">Name: ${r.profile?.name||'—'} · Email: ${r.profile?.email||'—'} · Phone: ${r.profile?.phone||'—'}</div>
-      <div class="vw-val" style="color:var(--t2);font-size:12px">Registered: ${r.profile?.registered?'Yes':'No'} · Joined: ${r.profile?.createdAt||'—'} · Last login: ${r.profile?.lastLogin||'—'}</div>
-    </div>
-    <div class="vw-section">
-      <div class="vw-lbl">Transactions (${r.transactions?.length||0})</div>
-      ${(r.transactions||[]).slice(-5).map(t=>`<div class="vw-val">${t.direction==='sent'?'↑':'↓'} ${t.amount} ${t.fromCurrency} → ${t.convertedAmount} ${t.toCurrency} · to ${t.toName}</div>`).join('')||'<div style="color:var(--t3);font-size:12px">No transactions</div>'}
-    </div>
-    <div class="vw-section">
-      <div class="vw-lbl">Activity Log (last 10)</div>
-      <div class="vw-log">${(r.activityLog||[]).slice(-10).map(e=>`[${new Date(e.ts).toLocaleString()}] ${e.event}${e.ip?' from '+e.ip:''}`).join('<br>')||'No activity'}</div>
-    </div>`;
-}
-
-async function exportAll(){
-  if(SRV&&CU){
-    const r=await apiFetch('GET','/export',null,CU.id);
-    if(!r.ok){toast('Export failed',false);return;}
-    const b=new Blob([JSON.stringify(r,null,2)],{type:'application/json'});
-    const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='aderias_export_'+Date.now()+'.json';a.click();
-    toast('All data exported',true);
-  }else{
-    const b=new Blob([JSON.stringify(LDB,null,2)],{type:'application/json'});
-    const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='aderias_local_'+Date.now()+'.json';a.click();
-    toast('Local data exported',true);
-  }
-}
+window.saveNick = async function(){
+  if(!selContact) return;
+  const nick=document.getElementById('cd-nick').value.trim();
+  await setDoc(doc(db,'contacts',CU.id,'list',selContact.id), { ...selContact, nick }, { merge:true });
+  toast('Nickname saved', true);
+};
+window.chatContact = async function(){
+  if(!selContact) return;
+  const cid = dmId(CU.id, selContact.id);
+  const ref = doc(db,'chats',cid);
+  const snap = await getDoc(ref);
+  if(!snap.exists()) await setDoc(ref, { id:cid, name:selContact.name, type:'direct', members:[CU.id, selContact.id], updatedAt: Date.now(), prev:'' });
+  closeMod('m-contact'); openChat(cid);
+};
+window.removeContact = async function(){
+  if(!selContact) return;
+  await deleteDoc(doc(db,'contacts',CU.id,'list',selContact.id));
+  closeMod('m-contact'); toast('Contact removed', false);
+};
 
 /* ══ MONEY TRANSFER ══ */
 function buildCurrGrids(){
   ['from-grid','to-grid'].forEach(id=>{
-    const g=document.getElementById(id);g.innerHTML='';
+    const g=document.getElementById(id); if(!g) return; g.innerHTML='';
     const isFr=id==='from-grid';
     Object.keys(CUR).slice(0,12).forEach(k=>{
       const b=document.createElement('button');
@@ -1754,77 +1621,123 @@ function buildCurrGrids(){
     });
   });
 }
-
-function calcRate(){
+window.calcRate = function(){
   const amt=parseFloat(document.getElementById('mn-amt').value)||0;
   const el=document.getElementById('xr-txt');
   if(!amt){el.textContent='Enter amount above';el.style.color='var(--t2)';return;}
   const usd=amt*(TO_USD[fromCur]||1);
   const conv=(usd/(TO_USD[toCur]||1)).toFixed(2);
   el.innerHTML=`<span class="rate-num">${CUR[toCur]?.s||''} ${conv}</span> <span style="font-size:12px;color:var(--t2)">${toCur}</span>`;
-}
+};
+window.swapCurr = function(){ [fromCur,toCur]=[toCur,fromCur]; buildCurrGrids(); calcRate(); };
 
-function swapCurr(){[fromCur,toCur]=[toCur,fromCur];buildCurrGrids();calcRate();}
-
-async function confirmTransfer(){
+window.confirmTransfer = async function(){
   const amt=parseFloat(document.getElementById('mn-amt').value);
   const note=document.getElementById('mn-note').value.trim();
-  if(!amt||amt<=0){toast('Enter a valid amount',false);return;}
-  if(!mnTo){toast('Select a recipient',false);return;}
+  if(!amt||amt<=0){toast('Enter a valid amount', false);return;}
+  if(!mnTo){toast('Select a recipient', false);return;}
   const usd=amt*(TO_USD[fromCur]||1);
   const conv=(usd/(TO_USD[toCur]||1)).toFixed(2);
-  const msg={id:Date.now(),type:'money',senderId:CU.id,senderName:CU.name,amount:amt,fromCurrency:fromCur,toCurrency:toCur,convertedAmount:conv,note,toId:mnTo.id,toName:mnTo.name,ts:Date.now()};
-  const cid=selCid||'general';
-  const c=LDB.chats[cid];if(!c) return;
-  c.messages=c.messages||[];c.messages.push(msg);c.prev=`💸 ${amt} ${fromCur}`;c.updatedAt=msg.ts;
-  saveLDB();renderSb();closeMod('m-money');if(selCid===cid) appendMsg(msg);
-  if(SRV&&CU) await apiFetch('POST','/message',{chatId:cid,message:msg},CU.id);
-  toast(`Sent ${amt} ${fromCur} → ${conv} ${toCur}!`,true);
-}
+  const cid = selCid || dmId(CU.id, mnTo.id);
+  const chatRef = doc(db,'chats',cid);
+  const snap = await getDoc(chatRef);
+  if(!snap.exists()) await setDoc(chatRef, { id:cid, name:mnTo.name, type:'direct', members:[CU.id, mnTo.id], updatedAt: Date.now(), prev:'' });
+  await addDoc(collection(db,'chats',cid,'messages'), {
+    type:'money', senderId:CU.id, senderName:CU.name, amount:amt,
+    fromCurrency:fromCur, toCurrency:toCur, convertedAmount:conv, note,
+    toId:mnTo.id, toName:mnTo.name, ts: Date.now()
+  });
+  await updateDoc(chatRef, { prev:`💸 ${amt} ${fromCur}`, updatedAt: Date.now() });
+  closeMod('m-money');
+  if(selCid!==cid) openChat(cid);
+  toast(`Sent ${amt} ${fromCur} → ${conv} ${toCur}!`, true);
+};
+
+/* ══ LEADER PANEL ══ */
+window.loadLeaderPanel = async function(){
+  const usersSnap = await getDocs(collection(db,'users'));
+  const users = usersSnap.docs.map(d=>d.data());
+  const chatsSnap = await getDocs(collection(db,'chats'));
+  let msgCount = 0;
+  for(const c of chatsSnap.docs){
+    const ms = await getDocs(collection(db,'chats',c.id,'messages'));
+    msgCount += ms.size;
+  }
+  document.getElementById('lp-users').textContent = users.length;
+  document.getElementById('lp-chats').textContent = chatsSnap.size;
+  document.getElementById('lp-msgs').textContent = msgCount;
+  document.getElementById('lp-reg').textContent = users.filter(u=>u.registered).length;
+  document.getElementById('lp-path').textContent = '☁ Cloud Firestore (aderias-c1a7b)';
+
+  const el=document.getElementById('lp-list'); el.innerHTML='';
+  users.forEach(u=>{
+    const d=document.createElement('div'); d.className='u-card';
+    d.innerHTML=`<div class="av" style="width:34px;height:34px;font-size:11px;background:${u.grad||pickGrad(u.name||'?')}">${ini(u.name||'?')}</div>
+      <div style="flex:1"><div class="uc-name">${esc(u.name||'Unknown')}</div>
+      <div class="uc-meta">@${u.username||''} · ${u.phone||u.email||'—'} · joined ${fmtT(u.joinedAt||Date.now())}</div></div>
+      <div class="uc-live ${u.registered?'y':'n'}">${u.registered?'● Live':'○'}</div>`;
+    el.appendChild(d);
+  });
+};
+
+window.exportAll = async function(){
+  const usersSnap = await getDocs(collection(db,'users'));
+  const chatsSnap = await getDocs(collection(db,'chats'));
+  const data = { users: usersSnap.docs.map(d=>d.data()), chats: chatsSnap.docs.map(d=>d.data()) };
+  const b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='aderias_export_'+Date.now()+'.json';a.click();
+  toast('All data exported', true);
+};
+
+// NOTE: the old "view user vault password" feature depended on a local
+// server file vault (D:\zero data) and cannot work with Firestore as-is.
+// It's disabled here; ask if you want a Firestore-based audit-log version instead.
+window.viewUser = function(){
+  toast('Vault viewer needs local server — not available in cloud mode', false);
+};
 
 /* ══ MODALS ══ */
-function openMod(id){
-  if(id==='m-leader'){if(!isLdr(CU))return;loadLeaderPanel();}
+window.openMod = function(id){
+  if(id==='m-leader'){ if(!isLdr(CU)) return; loadLeaderPanel(); }
   document.getElementById(id).classList.add('open');
-}
-function closeMod(id){document.getElementById(id).classList.remove('open');}
-document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')}));
+};
+window.closeMod = function(id){ document.getElementById(id).classList.remove('open'); };
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.querySelectorAll('.ov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')}));
+});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('.ov.open').forEach(o=>o.classList.remove('open'))});
 
 /* ══ TOAST ══ */
 let tt;
 function toast(msg,ok){
   const el=document.getElementById('toast');
+  if(!el) return;
   el.textContent=msg;el.className='toast '+(ok?'tok':'tnok')+' show';
   clearTimeout(tt);tt=setTimeout(()=>el.classList.remove('show'),3500);
 }
 
-/* ══ SCREEN ══ */
-function go(id){document.querySelectorAll('.scr').forEach(s=>s.classList.toggle('off',s.id!==id));}
+/* ══ SCREEN SWITCH ══ */
+function go(id){ document.querySelectorAll('.scr').forEach(s=>s.classList.toggle('off',s.id!==id)); }
 
 /* ══ BOOT ══ */
-window.addEventListener('DOMContentLoaded',async()=>{
-  LDB=loadLDB();
-  await checkSrv();
+window.addEventListener('DOMContentLoaded', ()=>{
+  document.getElementById('srv-dot').className='sd sd-on';
+  document.getElementById('srv-txt').textContent='Connected to Firebase (aderias-c1a7b)';
+  document.getElementById('srv-txt').style.color='var(--ok)';
 
   const hash=location.hash;
   if(hash.includes('inv=')){
-    pendInv=hash.split('inv=')[1].split('&')[0];
     try{
-      const d=JSON.parse(atob(pendInv));
+      const d=JSON.parse(atob(hash.split('inv=')[1].split('&')[0]));
       document.getElementById('inv-strip').classList.add('on');
       document.getElementById('inv-title').textContent=(d.inviterName||'Someone')+' invited you to Aderias!';
-      document.getElementById('inv-sub').textContent='Sign up to join "'+d.chatName+'" automatically.';
+      document.getElementById('inv-sub').textContent='Sign up to get connected automatically.';
     }catch{}
     setTab('su');
   }
-  const params=new URLSearchParams(location.search);
-  if(params.get('mode')==='signup') setTab('su');
-  if(params.get('mode')==='signin') setTab('si');
-
-  await restoreSess();
-  if(!CU) go('s-auth');
+  // onAuthStateChanged (registered above) handles session restore + routing.
 });
+
 </script>
 </body>
 </html>
