@@ -210,8 +210,9 @@ input,textarea,select,button{font-family:var(--f)}
 .sb-srch input{flex:1;background:none;border:none;outline:none;color:var(--t0);font-size:13px}
 .sb-srch input::placeholder{color:var(--t4)}
 
-.sb-tabs{display:flex;border-bottom:1px solid var(--b4);margin:0 -14px;padding:0 14px;gap:0}
-.sbt{flex:1;padding:8px 4px;border:none;background:none;color:var(--t3);font-size:12px;font-weight:500;border-bottom:2px solid transparent;transition:.15s;cursor:pointer}
+.sb-tabs{display:flex;border-bottom:1px solid var(--b4);margin:0 -14px;padding:0 14px;gap:0;overflow-x:auto;scrollbar-width:none}
+.sb-tabs::-webkit-scrollbar{display:none}
+.sbt{flex:1 0 auto;padding:8px 8px;border:none;background:none;color:var(--t3);font-size:12px;font-weight:500;border-bottom:2px solid transparent;transition:.15s;cursor:pointer;white-space:nowrap}
 .sbt.on{color:var(--g2);border-bottom-color:var(--g2)}
 
 /* chat list */
@@ -734,6 +735,8 @@ input,textarea,select,button{font-family:var(--f)}
         <button class="sbt on" onclick="sbTab(this,'all')">All</button>
         <button class="sbt" onclick="sbTab(this,'direct')">DMs</button>
         <button class="sbt" onclick="sbTab(this,'group')">Groups</button>
+        <button class="sbt" onclick="openStoryCreate()">+ Story</button>
+        <button class="sbt" onclick="openMod('m-post-create')">+ Post</button>
       </div>
     </div>
     <div class="sb-list" id="sb-list"></div>
