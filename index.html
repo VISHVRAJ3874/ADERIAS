@@ -545,6 +545,44 @@ input,textarea,select,button{font-family:var(--f)}
 .uc-live{font-size:10.5px;font-family:var(--fm)}
 .uc-live.y{color:var(--ok)}.uc-live.n{color:var(--t4)}
 
+/* ── STORIES ROW ── */
+.stories-row{display:flex;gap:10px;padding:2px 14px 12px;overflow-x:auto;scrollbar-width:none}
+.stories-row::-webkit-scrollbar{display:none}
+.story-item{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;cursor:pointer;width:56px}
+.story-ring{width:52px;height:52px;border-radius:50%;padding:2px;background:var(--b4);display:flex;align-items:center;justify-content:center}
+.story-ring.unseen{background:linear-gradient(135deg,var(--g2),var(--a2))}
+.story-ring .av{width:100%;height:100%;font-size:15px}
+.story-add-badge{position:relative}
+.story-add-badge::after{content:'+';position:absolute;bottom:-2px;right:-2px;width:18px;height:18px;border-radius:50%;background:var(--g2);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg-sidebar)}
+.story-item-name{font-size:10px;color:var(--t2);max-width:56px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* ── STORY VIEWER ── */
+#m-story-view .modal, #m-story-view{background:rgba(10,10,8,.92)}
+.story-view-frame{width:380px;max-width:94vw;height:80vh;max-height:720px;background:#111;border-radius:var(--r18);position:relative;overflow:hidden;display:flex;flex-direction:column}
+.story-view-bar{position:absolute;top:8px;left:8px;right:8px;height:3px;background:rgba(255,255,255,.25);border-radius:99px;z-index:3}
+.story-view-fill{height:100%;width:0%;background:#fff;border-radius:99px;transition:width .1s linear}
+.story-view-hd{position:absolute;top:18px;left:12px;right:12px;display:flex;align-items:center;gap:9px;z-index:3}
+.story-view-body{flex:1;display:flex;align-items:center;justify-content:center;text-align:center;padding:20px;color:#fff;font-size:18px;font-weight:600;word-break:break-word}
+.story-view-body img,.story-view-body video{width:100%;height:100%;object-fit:contain}
+.story-view-body iframe{width:100%;height:100%;border:none}
+
+/* ── POSTS FEED ── */
+.post-card{background:var(--bg-hover);border:1px solid var(--b4);border-radius:var(--r14);padding:13px 14px;display:flex;flex-direction:column;gap:8px}
+.post-hd{display:flex;align-items:center;gap:9px}
+.post-hd-name{font-size:13px;font-weight:700;color:var(--t0)}
+.post-hd-time{font-size:10.5px;color:var(--t3);font-family:var(--fm)}
+.post-text{font-size:13.5px;color:var(--t1);line-height:1.5}
+.post-img{width:100%;border-radius:var(--r10);max-height:280px;object-fit:cover}
+.post-actions{display:flex;gap:14px;padding-top:4px;border-top:1px solid var(--b4)}
+.post-act{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--t2);cursor:pointer;padding-top:8px;transition:.15s}
+.post-act:hover{color:var(--g2)}
+.post-act.liked{color:var(--no)}
+.post-comments{display:flex;flex-direction:column;gap:6px}
+.post-comment{font-size:12px;color:var(--t1);background:var(--bg-card);padding:6px 10px;border-radius:var(--r10)}
+.post-comment b{color:var(--t0)}
+.post-comment-row{display:flex;gap:6px}
+.post-comment-row input{flex:1}
+
 /* connection bar */
 .cbar{position:fixed;top:0;left:0;right:0;height:2px;z-index:9999;display:none;background:linear-gradient(90deg,var(--g4),var(--a3),var(--g4));background-size:200% 100%}
 .cbar.loading{display:block;animation:cba 1.2s linear infinite}
@@ -669,11 +707,16 @@ input,textarea,select,button{font-family:var(--f)}
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
             <span class="sba-tip">Send Money</span>
           </button>
+          <button class="sba" onclick="openFeed()" title="Posts Feed">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            <span class="sba-tip">Posts Feed</span>
+          </button>
           <button class="sba" id="ldr-btn" style="display:none" onclick="openMod('m-leader')">
             <span>👑</span><span class="sba-tip">Leader Panel</span>
           </button>
         </div>
       </div>
+      <div class="stories-row" id="stories-row"></div>
       <div class="sb-srch">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--t3);flex-shrink:0"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
         <input placeholder="Search chats…" oninput="filterSb(this.value)">
@@ -1007,6 +1050,85 @@ input,textarea,select,button{font-family:var(--f)}
   </div>
 </div>
 
+<!-- ══════ MODAL: CREATE STORY ══════ -->
+<div class="ov" id="m-story-create">
+  <div class="modal">
+    <button class="mx" onclick="closeMod('m-story-create')">✕</button>
+    <div class="m-hd">
+      <div class="m-ic" style="background:var(--g7);color:var(--g2)">📖</div>
+      <div><h3>Add to Story</h3><p class="sub">Visible to your contacts for 24 hours.</p></div>
+    </div>
+    <div class="fg"><div class="fl">Type</div>
+      <div class="curr-grid" style="grid-template-columns:repeat(4,1fr)" id="story-type-grid">
+        <button type="button" class="cur-btn on" data-t="text" onclick="setStoryType('text',this)">✏️ Text</button>
+        <button type="button" class="cur-btn" data-t="photo" onclick="setStoryType('photo',this)">🖼️ Photo</button>
+        <button type="button" class="cur-btn" data-t="video" onclick="setStoryType('video',this)">🎬 Video</button>
+        <button type="button" class="cur-btn" data-t="song" onclick="setStoryType('song',this)">🎵 Song</button>
+      </div>
+    </div>
+    <div id="story-text-wrap" class="fg">
+      <div class="fl">What's on your mind?</div>
+      <input class="fi" id="story-text" type="text" placeholder="Type your status…" maxlength="120">
+      <div class="curr-grid" id="story-bg-grid" style="margin-top:8px"></div>
+    </div>
+    <div id="story-link-wrap" class="fg" style="display:none">
+      <div class="fl" id="story-link-label">Paste a link</div>
+      <input class="fi" id="story-link" type="url" placeholder="https://…">
+      <div class="sub" style="margin-top:4px">Photo: any direct image link (e.g. imgbb.com) · Video: YouTube link · Song: Spotify/YouTube link</div>
+    </div>
+    <div class="mb-row">
+      <button class="mb gho" onclick="closeMod('m-story-create')">Cancel</button>
+      <button class="mb prim" onclick="submitStory()">Post Story</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ MODAL: VIEW STORY (fullscreen) ══════ -->
+<div class="ov" id="m-story-view">
+  <div class="story-view-frame" id="story-view-frame">
+    <button class="mx" style="top:14px;right:14px;background:rgba(0,0,0,.3);color:#fff" onclick="closeMod('m-story-view')">✕</button>
+    <div class="story-view-bar"><div class="story-view-fill" id="story-view-fill"></div></div>
+    <div class="story-view-hd">
+      <div class="av" id="story-view-av" style="width:34px;height:34px;font-size:12px"></div>
+      <div>
+        <div style="font-weight:600;color:#fff;font-size:13px" id="story-view-name"></div>
+        <div style="font-size:10.5px;color:rgba(255,255,255,.7)" id="story-view-time"></div>
+      </div>
+    </div>
+    <div class="story-view-body" id="story-view-body"></div>
+  </div>
+</div>
+
+<!-- ══════ MODAL: POSTS FEED ══════ -->
+<div class="ov" id="m-feed">
+  <div class="modal" style="width:480px">
+    <button class="mx" onclick="closeMod('m-feed')">✕</button>
+    <div class="m-hd">
+      <div class="m-ic" style="background:var(--g7);color:var(--g2)">🗞️</div>
+      <div><h3>Contacts Feed</h3><p class="sub">Posts from people you've added as contacts.</p></div>
+    </div>
+    <button class="mb prim" onclick="openMod('m-post-create')">+ New Post</button>
+    <div id="feed-list" style="display:flex;flex-direction:column;gap:12px;max-height:440px;overflow-y:auto"></div>
+  </div>
+</div>
+
+<!-- ══════ MODAL: CREATE POST ══════ -->
+<div class="ov" id="m-post-create">
+  <div class="modal">
+    <button class="mx" onclick="closeMod('m-post-create')">✕</button>
+    <div class="m-hd">
+      <div class="m-ic" style="background:var(--g7);color:var(--g2)">📝</div>
+      <div><h3>New Post</h3><p class="sub">Shown to your contacts in their feed.</p></div>
+    </div>
+    <div class="fg"><div class="fl">Caption</div><input class="fi" id="post-text" type="text" placeholder="What's happening?" maxlength="280"></div>
+    <div class="fg"><div class="fl">Image link (optional)</div><input class="fi" id="post-img" type="url" placeholder="https://…"></div>
+    <div class="mb-row">
+      <button class="mb gho" onclick="closeMod('m-post-create')">Cancel</button>
+      <button class="mb prim" onclick="submitPost()">Post</button>
+    </div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <!-- Firebase-powered app logic (must be type="module" for import/export to work) -->
@@ -1227,6 +1349,7 @@ function enterApp(){
   document.getElementById('ldr-btn').style.display=isLdr(CU)?'flex':'none';
   updateRegPill(); buildCurrGrids();
   listenChats();
+  renderStoriesRow();
 }
 
 /* ══ LIVE CHAT LIST (realtime) ══ */
@@ -1726,6 +1849,239 @@ function toast(msg,ok){
 
 /* ══ SCREEN SWITCH ══ */
 function go(id){ document.querySelectorAll('.scr').forEach(s=>s.classList.toggle('off',s.id!==id)); }
+
+/* ══════════════════════════════════════════════════════════
+   STORIES — text (native) + photo/video/song (via pasted link)
+   Visible to: yourself + anyone who has YOU as a contact... and
+   anyone YOU have as a contact (kept simple: shown to your saved
+   contacts). Expires 24h after posting (client-side filtered).
+══════════════════════════════════════════════════════════ */
+const STORY_BGS = ['#5a6e48','#4a5c3a','#a68b5b','#6b7f58','#8b7355','#8a9e74'];
+let storyType = 'text', storyBg = STORY_BGS[0];
+let __activeStoryQueue = [], __activeStoryIdx = 0;
+
+window.openStoryCreate = function(){
+  storyType='text'; storyBg=STORY_BGS[0];
+  document.getElementById('story-text').value='';
+  document.getElementById('story-link').value='';
+  document.querySelectorAll('#story-type-grid .cur-btn').forEach(b=>b.classList.toggle('on', b.dataset.t==='text'));
+  document.getElementById('story-text-wrap').style.display='flex';
+  document.getElementById('story-link-wrap').style.display='none';
+  const bgGrid=document.getElementById('story-bg-grid'); bgGrid.innerHTML='';
+  STORY_BGS.forEach((c,i)=>{
+    const b=document.createElement('button');
+    b.type='button'; b.className='cur-btn'+(i===0?' on':'');
+    b.style.background=c; b.style.color='#fff'; b.textContent='Aa';
+    b.onclick=()=>{ storyBg=c; document.querySelectorAll('#story-bg-grid .cur-btn').forEach(x=>x.classList.remove('on')); b.classList.add('on'); };
+    bgGrid.appendChild(b);
+  });
+  openMod('m-story-create');
+};
+window.setStoryType = function(t, btn){
+  storyType=t;
+  document.querySelectorAll('#story-type-grid .cur-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.getElementById('story-text-wrap').style.display = t==='text' ? 'flex':'none';
+  document.getElementById('story-link-wrap').style.display = t==='text' ? 'none':'flex';
+  document.getElementById('story-link-label').textContent = t==='photo'?'Paste an image link':t==='video'?'Paste a video link':'Paste a song link';
+};
+
+window.submitStory = async function(){
+  if(!CU) return;
+  let content='', bg='';
+  if(storyType==='text'){
+    content=document.getElementById('story-text').value.trim();
+    if(!content){toast('Write something first',false);return;}
+    bg=storyBg;
+  } else {
+    content=document.getElementById('story-link').value.trim();
+    if(!content){toast('Paste a link first',false);return;}
+  }
+  const contactsSnap = await getDocs(collection(db,'contacts',CU.id,'list'));
+  const audience = [CU.id, ...contactsSnap.docs.map(d=>d.id)];
+  await addDoc(collection(db,'stories'), {
+    userId: CU.id, userName: CU.name, grad: CU.grad||pickGrad(CU.name||'?'),
+    type: storyType, content, bg, audience,
+    createdAt: Date.now(), expiresAt: Date.now() + 24*60*60*1000
+  });
+  closeMod('m-story-create');
+  toast('Story posted!', true);
+  renderStoriesRow();
+};
+
+async function renderStoriesRow(){
+  const row=document.getElementById('stories-row');
+  if(!row||!CU) return;
+  row.innerHTML='';
+  // your own story circle first
+  const meWrap=document.createElement('div'); meWrap.className='story-item';
+  meWrap.innerHTML=`<div class="story-ring story-add-badge"><div class="av" style="background:${CU.grad||pickGrad(CU.name||'?')}">${ini(CU.name||'?')}</div></div><div class="story-item-name">Your story</div>`;
+  meWrap.onclick=()=>openStoryCreate();
+  row.appendChild(meWrap);
+
+  const now=Date.now();
+  const snap = await getDocs(query(collection(db,'stories'), where('audience','array-contains', CU.id)));
+  const byUser = {};
+  snap.forEach(d=>{
+    const s=d.data();
+    if(s.expiresAt < now) return;
+    if(s.userId===CU.id) return; // own stories shown via the + circle
+    (byUser[s.userId] = byUser[s.userId]||[]).push({id:d.id,...s});
+  });
+  Object.values(byUser).forEach(list=>{
+    list.sort((a,b)=>a.createdAt-b.createdAt);
+    const first=list[0];
+    const item=document.createElement('div'); item.className='story-item';
+    item.innerHTML=`<div class="story-ring unseen"><div class="av" style="background:${first.grad||pickGrad(first.userName||'?')}">${ini(first.userName||'?')}</div></div><div class="story-item-name">${esc(first.userName||'?')}</div>`;
+    item.onclick=()=>viewStoryQueue(list);
+    row.appendChild(item);
+  });
+}
+
+function viewStoryQueue(list){
+  __activeStoryQueue = list; __activeStoryIdx = 0;
+  showStoryAt(0);
+  openMod('m-story-view');
+}
+function showStoryAt(i){
+  const s = __activeStoryQueue[i];
+  if(!s){ closeMod('m-story-view'); return; }
+  document.getElementById('story-view-av').style.background = s.grad||pickGrad(s.userName||'?');
+  document.getElementById('story-view-av').textContent = ini(s.userName||'?');
+  document.getElementById('story-view-name').textContent = s.userName||'?';
+  document.getElementById('story-view-time').textContent = fmtT(s.createdAt);
+  const body=document.getElementById('story-view-body');
+  if(s.type==='text'){
+    body.parentElement.style.background = s.bg || '#333';
+    body.innerHTML = esc(s.content);
+  } else if(s.type==='photo'){
+    body.parentElement.style.background='#111';
+    body.innerHTML = `<img src="${esc(s.content)}" onerror="this.outerHTML='<div style=&quot;color:#fff&quot;>Could not load image</div>'">`;
+  } else if(s.type==='video'){
+    body.parentElement.style.background='#111';
+    const yt = s.content.match(/(?:youtu\.be\/|v=)([\w-]+)/);
+    body.innerHTML = yt ? `<iframe src="https://www.youtube.com/embed/${yt[1]}?autoplay=1" allow="autoplay"></iframe>` : `<video src="${esc(s.content)}" controls autoplay></video>`;
+  } else if(s.type==='song'){
+    body.parentElement.style.background='#111';
+    body.innerHTML = `<div style="color:#fff;padding:20px"><div style="font-size:40px;margin-bottom:10px">🎵</div><a href="${esc(s.content)}" target="_blank" style="color:var(--g4)">Open song link</a></div>`;
+  }
+  const fill=document.getElementById('story-view-fill');
+  fill.style.transition='none'; fill.style.width='0%';
+  requestAnimationFrame(()=>{ fill.style.transition='width 5s linear'; fill.style.width='100%'; });
+  clearTimeout(window.__storyTimer);
+  window.__storyTimer = setTimeout(()=>showStoryAt(i+1), 5000);
+}
+document.addEventListener('click', (e)=>{
+  const frame=document.getElementById('story-view-frame');
+  if(!frame || !document.getElementById('m-story-view').classList.contains('open')) return;
+  if(e.target.closest('.mx')) return;
+  if(!frame.contains(e.target)) return;
+  clearTimeout(window.__storyTimer);
+  showStoryAt(++__activeStoryIdx);
+});
+
+/* ══════════════════════════════════════════════════════════
+   POSTS — private feed, visible to your contacts, likes+comments
+══════════════════════════════════════════════════════════ */
+window.openFeed = async function(){
+  openMod('m-feed');
+  const list=document.getElementById('feed-list');
+  list.innerHTML='<div style="text-align:center;color:var(--t3);font-size:12px;padding:20px">Loading…</div>';
+  const contactsSnap = await getDocs(collection(db,'contacts',CU.id,'list'));
+  const contactIds = contactsSnap.docs.map(d=>d.id);
+  const allowedIds = [CU.id, ...contactIds];
+  const postsSnap = await getDocs(query(collection(db,'posts'), orderBy('createdAt','desc'), limit(50)));
+  const posts = postsSnap.docs.map(d=>({id:d.id,...d.data()})).filter(p=>allowedIds.includes(p.userId));
+  list.innerHTML='';
+  if(!posts.length){ list.innerHTML='<div style="text-align:center;color:var(--t3);font-size:12px;padding:20px">No posts yet from your contacts.</div>'; return; }
+  for(const p of posts) list.appendChild(await buildPostCard(p));
+};
+
+async function buildPostCard(p){
+  const card=document.createElement('div'); card.className='post-card';
+  const liked = (p.likes||[]).includes(CU.id);
+  card.innerHTML=`
+    <div class="post-hd">
+      <div class="av" style="width:32px;height:32px;font-size:11px;background:${p.grad||pickGrad(p.userName||'?')}">${ini(p.userName||'?')}</div>
+      <div><div class="post-hd-name">${esc(p.userName||'?')}</div><div class="post-hd-time">${fmtT(p.createdAt)}</div></div>
+    </div>
+    ${p.text?`<div class="post-text">${esc(p.text)}</div>`:''}
+    ${p.imageUrl?`<img class="post-img" src="${esc(p.imageUrl)}" onerror="this.style.display='none'">`:''}
+    <div class="post-actions">
+      <div class="post-act ${liked?'liked':''}" data-role="like">❤️ <span data-role="likecount">${(p.likes||[]).length}</span></div>
+      <div class="post-act" data-role="comment">💬 <span data-role="cmtcount">${(p.commentCount||0)}</span></div>
+    </div>
+    <div class="post-comments" data-role="comments" style="display:none"></div>
+    <div class="post-comment-row" data-role="cmtrow" style="display:none">
+      <input class="fi" data-role="cmtinput" placeholder="Write a comment…">
+      <button class="mb prim" style="flex:none;padding:0 14px">Send</button>
+    </div>`;
+  card.querySelector('[data-role="like"]').onclick = ()=>togglePostLike(p.id, card);
+  const cmtToggle = card.querySelector('[data-role="comment"]');
+  const cmtBox = card.querySelector('[data-role="comments"]');
+  const cmtRow = card.querySelector('[data-role="cmtrow"]');
+  cmtToggle.onclick = async ()=>{
+    const opening = cmtBox.style.display==='none';
+    cmtBox.style.display = opening?'flex':'none';
+    cmtRow.style.display = opening?'flex':'none';
+    if(opening) await loadComments(p.id, cmtBox);
+  };
+  const sendBtn = cmtRow.querySelector('button');
+  const input = cmtRow.querySelector('input');
+  sendBtn.onclick = async ()=>{
+    const txt=input.value.trim(); if(!txt) return;
+    await addDoc(collection(db,'posts',p.id,'comments'), { userId:CU.id, userName:CU.name, text:txt, ts:Date.now() });
+    await updateDoc(doc(db,'posts',p.id), { commentCount: (p.commentCount||0)+1 });
+    p.commentCount=(p.commentCount||0)+1;
+    card.querySelector('[data-role="cmtcount"]').textContent = p.commentCount;
+    input.value='';
+    await loadComments(p.id, cmtBox);
+  };
+  input.addEventListener('keydown', e=>{ if(e.key==='Enter') sendBtn.click(); });
+  return card;
+}
+
+async function loadComments(postId, box){
+  box.innerHTML='<div style="font-size:11px;color:var(--t3)">Loading…</div>';
+  const snap = await getDocs(query(collection(db,'posts',postId,'comments'), orderBy('ts','asc')));
+  box.innerHTML='';
+  if(snap.empty){ box.innerHTML='<div style="font-size:11px;color:var(--t3)">No comments yet.</div>'; return; }
+  snap.forEach(d=>{
+    const c=d.data();
+    const el=document.createElement('div'); el.className='post-comment';
+    el.innerHTML=`<b>${esc(c.userName||'?')}</b> ${esc(c.text)}`;
+    box.appendChild(el);
+  });
+}
+
+async function togglePostLike(postId, card){
+  const ref = doc(db,'posts',postId);
+  const snap = await getDoc(ref);
+  if(!snap.exists()) return;
+  const p = snap.data();
+  const likes = p.likes||[];
+  const has = likes.includes(CU.id);
+  const newLikes = has ? likes.filter(id=>id!==CU.id) : [...likes, CU.id];
+  await updateDoc(ref, { likes: newLikes });
+  const btn = card.querySelector('[data-role="like"]');
+  btn.classList.toggle('liked', !has);
+  card.querySelector('[data-role="likecount"]').textContent = newLikes.length;
+}
+
+window.submitPost = async function(){
+  const text = document.getElementById('post-text').value.trim();
+  const imageUrl = document.getElementById('post-img').value.trim();
+  if(!text && !imageUrl){ toast('Write something or add an image', false); return; }
+  await addDoc(collection(db,'posts'), {
+    userId: CU.id, userName: CU.name, grad: CU.grad||pickGrad(CU.name||'?'),
+    text, imageUrl, likes: [], commentCount: 0, createdAt: Date.now()
+  });
+  document.getElementById('post-text').value='';
+  document.getElementById('post-img').value='';
+  closeMod('m-post-create');
+  toast('Posted!', true);
+  openFeed();
+};
 
 /* ══ BOOT ══ */
 window.addEventListener('DOMContentLoaded', ()=>{
