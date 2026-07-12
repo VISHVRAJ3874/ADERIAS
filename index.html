@@ -570,6 +570,14 @@ input,textarea,select,button{font-family:var(--f)}
   .sb{position:fixed;inset:0;z-index:100;transform:translateX(-100%);transition:transform .32s cubic-bezier(.4,0,.2,1);width:100%}
   .sb.mob-open{transform:translateX(0)}
   .mob-btn{display:flex!important}
+
+  /* Allow the page to scroll on small screens — without this, tall
+     content (like the full sign-up form) gets cut off with no way
+     to reach it, which is why it only worked in "Desktop site" mode. */
+  html,body{overflow-y:auto;height:auto;min-height:100%}
+  .scr{overflow-y:auto;-webkit-overflow-scrolling:touch}
+  #s-auth{align-items:flex-start;padding-top:32px;padding-bottom:32px}
+  .msgs{-webkit-overflow-scrolling:touch}
 }
 .mob-btn{display:none}
 
