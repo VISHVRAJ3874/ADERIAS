@@ -146,6 +146,10 @@ input,textarea,select,button{font-family:var(--f)}
 .fi::placeholder{color:var(--t4)}
 .ph-row{display:flex;gap:8px}
 .ph-sel{background:var(--bg-card);border:1px solid var(--b4);border-radius:var(--r10);padding:11px 8px;color:var(--t1);font-size:13px;width:88px;flex-shrink:0;outline:none}
+.pw-wrap{position:relative;display:flex;align-items:center}
+.pw-wrap .fi{padding-right:40px}
+.pw-eye{position:absolute;right:6px;top:50%;transform:translateY(-50%);width:28px;height:28px;border:none;background:none;color:var(--t2);font-size:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;border-radius:var(--r6);transition:.15s}
+.pw-eye:hover{background:var(--bg-hover);color:var(--g2)}
 
 /* go btn */
 .btn-go{
@@ -669,12 +673,22 @@ input,textarea,select,button{font-family:var(--f)}
         </div>
       </div>
       <div class="fg"><div class="fl">Email (optional)</div><input class="fi" id="a-em" type="email" placeholder="you@example.com" autocomplete="email"></div>
-      <div class="fg"><div class="fl">Password</div><input class="fi" id="a-pw1" type="password" placeholder="Minimum 8 characters" autocomplete="new-password"></div>
+      <div class="fg"><div class="fl">Password</div>
+        <div class="pw-wrap">
+          <input class="fi" id="a-pw1" type="password" placeholder="Minimum 8 characters" autocomplete="new-password">
+          <button type="button" class="pw-eye" onclick="togglePwView('a-pw1',this)" title="Show/hide password">👁</button>
+        </div>
+      </div>
     </div>
 
     <div id="si-f" style="display:none">
       <div class="fg"><div class="fl">Phone / Email / Username</div><input class="fi" id="a-id" type="text" placeholder="phone, email, or @username" autocomplete="username"></div>
-      <div class="fg"><div class="fl">Password</div><input class="fi" id="a-pw2" type="password" placeholder="Your password" autocomplete="current-password"></div>
+      <div class="fg"><div class="fl">Password</div>
+        <div class="pw-wrap">
+          <input class="fi" id="a-pw2" type="password" placeholder="Your password" autocomplete="current-password">
+          <button type="button" class="pw-eye" onclick="togglePwView('a-pw2',this)" title="Show/hide password">👁</button>
+        </div>
+      </div>
     </div>
 
     <div class="a-err" id="a-err"></div>
@@ -707,14 +721,6 @@ input,textarea,select,button{font-family:var(--f)}
           <button class="sba" onclick="openMod('m-money')" title="Send Money">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
             <span class="sba-tip">Send Money</span>
-          </button>
-          <button class="sba" onclick="openStoryCreate()" title="Add Story">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-            <span class="sba-tip">Add Story</span>
-          </button>
-          <button class="sba" onclick="openMod('m-post-create')" title="New Post">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
-            <span class="sba-tip">New Post</span>
           </button>
           <button class="sba" onclick="openFeed()" title="Posts Feed">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
@@ -1239,6 +1245,13 @@ function loading(on){ const c=document.getElementById('cbar'); if(c) c.className
 
 /* ══ AUTH ══ */
 let authMode='su';
+window.togglePwView = function(id, btn){
+  const inp = document.getElementById(id);
+  const showing = inp.type === 'text';
+  inp.type = showing ? 'password' : 'text';
+  btn.textContent = showing ? '👁' : '🙈';
+};
+
 window.setTab = function(m){
   authMode=m;
   ['su','si'].forEach(t=>document.getElementById('tab-'+t).classList.toggle('on',t===m));
