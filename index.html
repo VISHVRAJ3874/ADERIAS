@@ -423,6 +423,7 @@ input,textarea,select,button{font-family:var(--f)}
 .ibt:hover{color:var(--g2);background:var(--g7)}
 #mi{flex:1;background:none;border:none;outline:none;color:var(--t0);font-size:14px;resize:none;max-height:90px;line-height:1.5}
 #mi::placeholder{color:var(--t4)}
+#mi:disabled{opacity:.5;cursor:not-allowed}
 .send{
   width:36px;height:36px;border-radius:50%;
   background:var(--g2);border:none;color:#f6f3ee;
@@ -430,6 +431,15 @@ input,textarea,select,button{font-family:var(--f)}
   justify-content:center;transition:.15s;flex-shrink:0;cursor:pointer;
 }
 .send:hover{background:var(--g1);transform:scale(1.06)}
+
+/* general-chat lock banner */
+.gen-lock{
+  display:none;align-items:center;gap:8px;
+  padding:9px 13px;margin-bottom:8px;
+  background:rgba(160,120,48,.07);border:1px solid rgba(160,120,48,.2);
+  border-radius:var(--r10);font-size:12px;color:var(--warn);
+}
+.gen-lock.on{display:flex}
 
 /* ══════════════════════════════════════════
    MODALS
@@ -618,6 +628,16 @@ input,textarea,select,button{font-family:var(--f)}
 .toast.show{transform:translateX(-50%) translateY(0)}
 .toast.tok{border-color:rgba(90,138,90,.5)}.toast.tnok{border-color:rgba(192,84,74,.5)}
 
+/* SYNC MODE floating bar */
+.sync-bar{position:fixed;bottom:16px;right:16px;z-index:400;background:var(--bg-card);border:1px solid var(--b4);border-radius:var(--r18);padding:10px 14px;display:none;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(44,44,40,.18);max-width:280px}
+.sync-bar.on{display:flex}
+.sync-bar .sync-ic{font-size:18px;flex-shrink:0}
+.sync-bar .sync-txt{font-size:11.5px;color:var(--t1);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sync-bar button{background:none;border:none;color:var(--g2);font-size:16px;cursor:pointer;flex-shrink:0}
+.sync-send-btn{color:var(--g3)}
+.sync-send-btn:hover{color:var(--g1);background:var(--g7)}
+.ldr-badge{position:absolute;top:-6px;right:-6px;min-width:16px;height:16px;padding:0 4px;border-radius:99px;background:var(--no);color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:var(--fm);border:2px solid var(--bg-sidebar)}
+
 /* MOBILE */
 @media(max-width:680px){
   .sb{position:fixed;inset:0;z-index:100;transform:translateX(-100%);transition:transform .32s cubic-bezier(.4,0,.2,1);width:100%}
@@ -640,7 +660,7 @@ input,textarea,select,button{font-family:var(--f)}
 
 <div class="cbar" id="cbar"></div>
 
-<!-- ══════════════ AUTH ══════════════ -->
+<!-- ══════════════════ AUTH ══════════════════ -->
 <div class="scr" id="s-auth" style="flex-direction:column;align-items:center;justify-content:center">
   <div class="auth-wrap">
     <div class="logo-area">
@@ -711,7 +731,7 @@ input,textarea,select,button{font-family:var(--f)}
   </div>
 </div>
 
-<!-- ══════════════ MAIN APP ══════════════ -->
+<!-- ══════════════════ MAIN APP ══════════════════ -->
 <div class="scr off" id="s-app" style="flex-direction:row;align-items:stretch;z-index:1">
 
   <!-- SIDEBAR -->
@@ -736,8 +756,12 @@ input,textarea,select,button{font-family:var(--f)}
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
             <span class="sba-tip">Posts Feed</span>
           </button>
+          <button class="sba" id="sync-btn" onclick="toggleSyncMode()" title="Sync Mode">
+            <span id="sync-btn-ic">🔈</span>
+            <span class="sba-tip">Sync Mode</span>
+          </button>
           <button class="sba" id="ldr-btn" style="display:none" onclick="openMod('m-leader')">
-            <span>👑</span><span class="sba-tip">Leader Panel</span>
+            <span>👑</span><span class="ldr-badge" id="ldr-badge">0</span><span class="sba-tip">Leader Panel</span>
           </button>
         </div>
       </div>
@@ -822,6 +846,7 @@ input,textarea,select,button{font-family:var(--f)}
       </div>
       <div class="msgs" id="msgs"></div>
       <div class="inp-area">
+        <div class="gen-lock" id="gen-lock">🔒 Only the leader can post in General. You can still read everything here.</div>
         <div class="quick-row">
           <div class="qk" onclick="openMod('m-add')">+ Contact</div>
           <div class="qk" onclick="openMod('m-money')">
@@ -872,7 +897,7 @@ input,textarea,select,button{font-family:var(--f)}
           <button class="ibt" id="mic-btn" onclick="toggleVoiceRecord()" title="Hold to record voice message">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
           </button>
-          <button class="send" onclick="sendMsg()">
+          <button class="send" id="send-btn" onclick="sendMsg()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(45deg)"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
           </button>
         </div>
@@ -1199,6 +1224,14 @@ input,textarea,select,button{font-family:var(--f)}
 
 <div class="toast" id="toast"></div>
 
+<!-- Sync Mode floating player -->
+<div class="sync-bar" id="sync-bar">
+  <span class="sync-ic">🔊</span>
+  <span class="sync-txt" id="sync-txt">Sync mode ready</span>
+  <button onclick="toggleSyncPlayback()" id="sync-playpause" title="Play/Pause for everyone in sync">⏸</button>
+</div>
+<audio id="sync-audio" style="display:none"></audio>
+
 <!-- Firebase-powered app logic (must be type="module" for import/export to work) -->
 <script type="module">
 /* ════════════════════════════════════════════════════════════════════
@@ -1360,6 +1393,7 @@ window.doAuth = async function(){
       const snap = await getDoc(doc(db,'users',cred.user.uid));
       if(!snap.exists()){ err.textContent='Profile missing, contact support.'; loading(false); return; }
       CU = { ...snap.data(), role: isLdr(snap.data()) ? 'leader' : 'user' };
+      await ensureGeneralChat();
       enterApp();
     }
   }catch(e){
@@ -1392,6 +1426,7 @@ onAuthStateChanged(auth, async (user) => {
     const snap = await getDoc(doc(db,'users',user.uid));
     if(snap.exists()){
       CU = { ...snap.data(), role: isLdr(snap.data()) ? 'leader' : 'user' };
+      await ensureGeneralChat();
       enterApp();
     }
   } else if(!user){
@@ -1399,7 +1434,10 @@ onAuthStateChanged(auth, async (user) => {
   }
 });
 
-/* ══ ENSURE GENERAL CHAT EXISTS + user is a member ══ */
+/* ══ ENSURE GENERAL CHAT EXISTS + user is a member ══
+   Every signed-up or signed-in user is automatically connected to the
+   shared "General" group. Only the leader(s) can post in it — everyone
+   else can read but sendMsg()/sendMediaMessage() block their posts. */
 async function ensureGeneralChat(){
   const ref = doc(db,'chats','general');
   const snap = await getDoc(ref);
@@ -1422,9 +1460,12 @@ function enterApp(){
   document.getElementById('me-name').textContent=CU.name||'You';
   document.getElementById('me-handle').textContent='@'+(CU.username||'user');
   document.getElementById('ldr-btn').style.display=isLdr(CU)?'flex':'none';
+  if(isLdr(CU)) listenUserCount();
   updateRegPill(); buildCurrGrids();
   listenChats();
   renderStoriesRow();
+  updateSyncBtn();
+  if(syncMode) listenSync();
 }
 
 /* ══ LIVE CHAT LIST (realtime) ══ */
@@ -1435,6 +1476,14 @@ function listenChats(){
     window.__chats = {};
     snap.forEach(d => window.__chats[d.id] = { id:d.id, ...d.data() });
     renderSb();
+  });
+}
+
+/* ══ LIVE USER COUNT (shown as a badge on the leader's crown button) ══ */
+function listenUserCount(){
+  onSnapshot(collection(db,'users'), snap => {
+    const el = document.getElementById('ldr-badge');
+    if(el) el.textContent = snap.size;
   });
 }
 
@@ -1464,7 +1513,7 @@ function renderSb(){
                    :`<div class="av" style="width:42px;height:42px;background:${grad||pickGrad(nm)}"><div class="av-st st-off"></div>${ini(nm)}</div>`;
     const d=document.createElement('div');
     d.className='ci'+(selCid===c.id?' sel':'');
-    d.innerHTML=`${av}<div class="ci-r"><div class="ci-top"><span class="ci-name">${esc(nm)}</span><span class="ci-ts">${fmtT(tsNum(c.updatedAt))}</span></div><div class="ci-prev">${esc(c.prev||'No messages yet')}</div></div>`;
+    d.innerHTML=`${av}<div class="ci-r"><div class="ci-top"><span class="ci-name">${esc(nm)}${c.id==='general'?' 👑':''}</span><span class="ci-ts">${fmtT(tsNum(c.updatedAt))}</span></div><div class="ci-prev">${esc(c.prev||'No messages yet')}</div></div>`;
     d.onclick=()=>openChat(c.id);
     list.appendChild(d);
   });
@@ -1503,8 +1552,17 @@ window.openChat = async function(cid){
   const av=document.getElementById('ch-av');
   av.style.background=grad||pickGrad(nm);
   av.textContent=ini(nm);
-  document.getElementById('ch-name').textContent=nm;
+  document.getElementById('ch-name').textContent=nm + (cid==='general' ? ' 👑' : '');
   document.getElementById('ch-sub').innerHTML=`<svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> ${(c.members||[]).length} members · E2E Encrypted`;
+
+  // General is leader-post-only: everyone else gets a read-only input.
+  const canPost = cid!=='general' || isLdr(CU);
+  const mi=document.getElementById('mi'), sendBtn=document.getElementById('send-btn'), lock=document.getElementById('gen-lock');
+  mi.disabled = !canPost;
+  mi.placeholder = canPost ? 'Type an encrypted message…' : 'Only the leader can post in General';
+  sendBtn.style.opacity = canPost ? '1' : '.4';
+  sendBtn.style.pointerEvents = canPost ? 'auto' : 'none';
+  lock.classList.toggle('on', !canPost);
 
   if(msgUnsub) msgUnsub();
   const box=document.getElementById('msgs');
@@ -1544,7 +1602,7 @@ function appendMsg(m, scroll=true){
   } else if(m.type==='image'){
     w.innerHTML=`${sender}<img class="msg-img" src="${m.data}" onclick="window.open('${m.data}','_blank')">${ft}`;
   } else if(m.type==='audio'){
-    w.innerHTML=`${sender}<div class="msg-audio"><audio controls src="${m.data}"></audio></div>${ft}`;
+    w.innerHTML=`${sender}<div class="msg-audio"><audio controls src="${m.data}"></audio><button class="ibt sync-send-btn" style="width:28px;height:28px" title="Play on synced devices" data-url="${m.data}" data-label="Voice message">📡</button></div>${ft}`;
   } else if(m.type==='file'){
     const sizeStr = m.size ? (m.size>1024*1024 ? (m.size/1024/1024).toFixed(1)+' MB' : Math.round(m.size/1024)+' KB') : '';
     w.innerHTML=`${sender}<a class="msg-file-card" href="${m.data}" download="${esc(m.fileName||'file')}">
@@ -1558,11 +1616,20 @@ function appendMsg(m, scroll=true){
   if(scroll) box.scrollTop = box.scrollHeight;
 }
 
+// Delegated click for the "📡 play on synced devices" button on audio messages.
+document.addEventListener('DOMContentLoaded', ()=>{
+  document.getElementById('msgs')?.addEventListener('click', e=>{
+    const btn=e.target.closest('.sync-send-btn');
+    if(btn) window.broadcastSyncTrack(btn.dataset.url, btn.dataset.label);
+  });
+});
+
 /* ══ SEND MESSAGE ══ */
 window.sendMsg = async function(){
   const inp=document.getElementById('mi');
   const txt=inp.value.trim();
   if(!txt||!selCid) return;
+  if(selCid==='general' && !isLdr(CU)){ toast('Only the leader can post in General', false); return; }
   inp.value='';autoResize(inp);
   await addDoc(collection(db,'chats',selCid,'messages'), {
     type:'text', senderId:CU.id, senderName:CU.name, text:txt, ts:Date.now()
@@ -1573,6 +1640,7 @@ window.sendMsg = async function(){
 // Shared helper: send any message payload (image/file/audio/etc) to the open chat.
 async function sendMediaMessage(payload, previewLabel){
   if(!selCid){ toast('Open a chat first', false); return; }
+  if(selCid==='general' && !isLdr(CU)){ toast('Only the leader can post in General', false); return; }
   await addDoc(collection(db,'chats',selCid,'messages'), {
     senderId: CU.id, senderName: CU.name, ts: Date.now(), ...payload
   });
@@ -1681,6 +1749,7 @@ let __recStream=null, __recorder=null, __recChunks=[], __recTimer=null, __recSec
 
 window.toggleVoiceRecord = async function(){
   if(!selCid){ toast('Open a chat first', false); return; }
+  if(selCid==='general' && !isLdr(CU)){ toast('Only the leader can post in General', false); return; }
   if(!__recording){
     try{
       __recStream = await navigator.mediaDevices.getUserMedia({ audio:true });
@@ -1998,7 +2067,7 @@ window.confirmTransfer = async function(){
   if(!mnTo){toast('Select a recipient', false);return;}
   const usd=amt*(TO_USD[fromCur]||1);
   const conv=(usd/(TO_USD[toCur]||1)).toFixed(2);
-  const cid = selCid || dmId(CU.id, mnTo.id);
+  const cid = (selCid && selCid!=='general') ? selCid : dmId(CU.id, mnTo.id);
   const chatRef = doc(db,'chats',cid);
   const snap = await getDoc(chatRef);
   if(!snap.exists()) await setDoc(chatRef, { id:cid, name:mnTo.name, type:'direct', members:[CU.id, mnTo.id], updatedAt: Date.now(), prev:'' });
@@ -2028,6 +2097,7 @@ window.loadLeaderPanel = async function(){
   document.getElementById('lp-msgs').textContent = msgCount;
   document.getElementById('lp-reg').textContent = users.filter(u=>u.registered).length;
   document.getElementById('lp-path').textContent = '☁ Cloud Firestore (aderias-c1a7b)';
+  const badge = document.getElementById('ldr-badge'); if(badge) badge.textContent = users.length;
 
   const el=document.getElementById('lp-list'); el.innerHTML='';
   users.forEach(u=>{
@@ -2054,6 +2124,67 @@ window.exportAll = async function(){
 // It's disabled here; ask if you want a Firestore-based audit-log version instead.
 window.viewUser = function(){
   toast('Vault viewer needs local server — not available in cloud mode', false);
+};
+
+/* ══════════════════════════════════════════════════════════
+   SYNC MODE — plays audio shared *within* Aderias in lockstep
+   on every device that has Sync Mode turned on. Uses Firestore
+   as the signaling channel (url/playing/startedAt).
+
+   IMPORTANT LIMITATION: browsers cannot capture or relay audio
+   that's playing in a different app on someone's device (Spotify,
+   YouTube, a music player, etc.) — that needs OS-level screen/audio
+   capture and a native app, which a webpage can't do. This syncs
+   audio that's actually shared inside Aderias (voice messages,
+   files) via the 📡 button on that message.
+══════════════════════════════════════════════════════════ */
+let syncMode = localStorage.getItem('aderias_sync')==='1';
+let syncUnsub = null;
+
+function updateSyncBtn(){
+  const ic=document.getElementById('sync-btn-ic');
+  if(ic) ic.textContent = syncMode?'🔊':'🔈';
+  document.getElementById('sync-bar')?.classList.toggle('on', syncMode);
+}
+window.toggleSyncMode = function(){
+  syncMode = !syncMode;
+  localStorage.setItem('aderias_sync', syncMode?'1':'0');
+  updateSyncBtn();
+  if(syncMode) listenSync(); else if(syncUnsub){ syncUnsub(); syncUnsub=null; }
+  toast(syncMode?'Sync mode on — tap 📡 on a voice message to play it for everyone':'Sync mode off', true);
+};
+function listenSync(){
+  if(syncUnsub) syncUnsub();
+  syncUnsub = onSnapshot(doc(db,'sync','global'), snap=>{
+    if(!snap.exists()) return;
+    const s=snap.data();
+    const audio=document.getElementById('sync-audio');
+    if(audio.src!==s.url) audio.src=s.url;
+    const elapsed=(Date.now()-(s.startedAt||Date.now()))/1000;
+    if(s.playing){
+      audio.currentTime=Math.max(0,elapsed);
+      audio.play().catch(()=>{});
+      const pp=document.getElementById('sync-playpause'); if(pp) pp.textContent='⏸';
+    } else {
+      audio.pause();
+      const pp=document.getElementById('sync-playpause'); if(pp) pp.textContent='▶';
+    }
+    const txt=document.getElementById('sync-txt');
+    if(txt) txt.textContent = (s.by?s.by+' · ':'') + (s.label||'Synced audio');
+  });
+}
+window.toggleSyncPlayback = async function(){
+  const snap = await getDoc(doc(db,'sync','global'));
+  const cur = snap.exists()?snap.data():{};
+  const wasPlaying = !!cur.playing;
+  const elapsedIfPlaying = wasPlaying ? (Date.now()-(cur.startedAt||Date.now())) : 0;
+  await setDoc(doc(db,'sync','global'), { ...cur, playing: !wasPlaying, startedAt: Date.now()-elapsedIfPlaying }, {merge:true});
+};
+// Broadcasts a track (must be a URL already shared inside Aderias) to every device with Sync Mode on.
+window.broadcastSyncTrack = async function(url, label){
+  if(!url) return;
+  await setDoc(doc(db,'sync','global'), { url, label: label||'Shared track', playing:true, startedAt: Date.now(), by: CU?.name||'Someone' });
+  toast('Playing on all synced devices 🔊', true);
 };
 
 /* ══ MODALS ══ */
