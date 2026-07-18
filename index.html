@@ -1,7 +1,6 @@
 /* ════════════════════════════════════════════════════════════
    ADERIAS — devloped by gohil vishvrajsinh
 ════════════════════════════════════════════════════════════ */
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -315,6 +314,16 @@ input,textarea,select,button{font-family:var(--f)}
 .m-tks{color:var(--ok);font-size:11px}
 
 /* special bubbles */
+@keyframes recPulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+.msg-img{max-width:260px;max-height:320px;border-radius:14px;display:block;cursor:pointer;object-fit:cover}
+.msg-file-card{display:flex;align-items:center;gap:10px;padding:11px 13px;background:var(--bg-card);border:1px solid var(--b4);border-radius:14px;min-width:200px;max-width:260px;text-decoration:none}
+.msg-file-ic{width:36px;height:36px;border-radius:10px;background:var(--g7);color:var(--g2);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.msg-file-name{font-size:12.5px;font-weight:600;color:var(--t0);word-break:break-all;line-height:1.3}
+.msg-file-size{font-size:10.5px;color:var(--t2);font-family:var(--fm);margin-top:2px}
+.msg-audio{display:flex;align-items:center;gap:9px;min-width:220px}
+.msg-audio audio{height:34px;max-width:200px}
+
 .money-card{
   padding:14px 16px;
   background:linear-gradient(135deg,rgba(166,139,91,.1),rgba(90,110,72,.07));
@@ -838,7 +847,11 @@ input,textarea,select,button{font-family:var(--f)}
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
             File
           </div>
-          <div class="qk" onclick="sendVoice()">
+          <div class="qk" onclick="openCamera()">
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+            Camera
+          </div>
+          <div class="qk" onclick="toggleVoiceRecord()">
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
             Voice
           </div>
@@ -851,16 +864,24 @@ input,textarea,select,button{font-family:var(--f)}
           <button class="ibt">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
           </button>
-          <button class="ibt" onclick="attachFile()">
+          <button class="ibt" onclick="attachFile()" title="Attach any file">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg>
           </button>
+          <input type="file" id="file-input" style="display:none" onchange="onFilePicked(event)">
+          <button class="ibt" onclick="openCamera()" title="Take a photo">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </button>
           <textarea id="mi" rows="1" placeholder="Type an encrypted message…" onkeydown="onKey(event)" oninput="autoResize(this)"></textarea>
-          <button class="ibt" onclick="sendVoice()">
+          <button class="ibt" id="mic-btn" onclick="toggleVoiceRecord()" title="Hold to record voice message">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/></svg>
           </button>
           <button class="send" onclick="sendMsg()">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="transform:rotate(45deg)"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
           </button>
+        </div>
+        <div id="rec-indicator" style="display:none;align-items:center;gap:8px;padding:8px 4px 0;font-size:12px;color:var(--no);font-family:var(--fm)">
+          <span style="width:8px;height:8px;border-radius:50%;background:var(--no);animation:recPulse 1s infinite"></span>
+          Recording… <span id="rec-time">0:00</span> — tap mic again to stop and send
         </div>
       </div>
     </div>
@@ -1154,6 +1175,27 @@ input,textarea,select,button{font-family:var(--f)}
     <div class="mb-row">
       <button class="mb gho" onclick="closeMod('m-post-create')">Cancel</button>
       <button class="mb prim" onclick="submitPost()">Post</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ MODAL: CAMERA CAPTURE ══════ -->
+<div class="ov" id="m-camera">
+  <div class="modal" style="width:420px;padding:16px">
+    <button class="mx" onclick="closeCamera()">✕</button>
+    <div class="m-hd"><div class="m-ic" style="background:var(--g7);color:var(--g2)">📷</div><div><h3>Camera</h3><p class="sub" id="cam-status">Requesting camera access…</p></div></div>
+    <div style="position:relative;width:100%;aspect-ratio:3/4;background:#111;border-radius:var(--r14);overflow:hidden">
+      <video id="cam-video" autoplay playsinline style="width:100%;height:100%;object-fit:cover;display:block"></video>
+      <canvas id="cam-canvas" style="display:none"></canvas>
+      <img id="cam-preview" style="display:none;width:100%;height:100%;object-fit:cover">
+    </div>
+    <div class="mb-row" id="cam-controls-live">
+      <button class="mb gho" onclick="closeCamera()">Cancel</button>
+      <button class="mb prim" onclick="captureCameraPhoto()">📸 Capture</button>
+    </div>
+    <div class="mb-row" id="cam-controls-preview" style="display:none">
+      <button class="mb gho" onclick="retakeCameraPhoto()">Retake</button>
+      <button class="mb prim" onclick="sendCameraPhoto()">Send →</button>
     </div>
   </div>
 </div>
@@ -1488,27 +1530,34 @@ function appendMsg(m, scroll=true){
   const box=document.getElementById('msgs');
   if(!box) return;
   const isMe=m.senderId===CU?.id;
+  const w=document.createElement('div');
+  w.className='mw '+(isMe?'me':'th');
+  const sender = !isMe ? `<div class="m-sender">${esc(m.senderName||'?')}</div>` : '';
+  const ft = `<div class="m-ft"><span class="m-ts">${fmtT(m.ts)}</span>${isMe?'<span class="m-tks">✓✓</span>':''}</div>`;
+
   if(m.type==='money'){
-    const w=document.createElement('div');
-    w.className='mw '+(isMe?'me':'th');
-    w.innerHTML=`${!isMe?`<div class="m-sender">${esc(m.senderName||'?')}</div>`:''}
+    w.innerHTML=`${sender}
       <div class="money-card">
         <div class="mc-label">💸 Money Transfer</div>
         <div class="mc-amount">${m.fromCurrency} ${m.amount}</div>
         <div class="mc-conv">→ ${m.toCurrency} ${m.convertedAmount||'—'}</div>
         ${m.note?`<div class="mc-note">${esc(m.note)}</div>`:''}
         <div class="mc-status">⏳ Pending</div>
-      </div>
-      <div class="m-ft"><span class="m-ts">${fmtT(m.ts)}</span>${isMe?'<span class="m-tks">✓✓</span>':''}</div>`;
-    box.appendChild(w);
+      </div>${ft}`;
+  } else if(m.type==='image'){
+    w.innerHTML=`${sender}<img class="msg-img" src="${m.data}" onclick="window.open('${m.data}','_blank')">${ft}`;
+  } else if(m.type==='audio'){
+    w.innerHTML=`${sender}<div class="msg-audio"><audio controls src="${m.data}"></audio></div>${ft}`;
+  } else if(m.type==='file'){
+    const sizeStr = m.size ? (m.size>1024*1024 ? (m.size/1024/1024).toFixed(1)+' MB' : Math.round(m.size/1024)+' KB') : '';
+    w.innerHTML=`${sender}<a class="msg-file-card" href="${m.data}" download="${esc(m.fileName||'file')}">
+      <div class="msg-file-ic">📎</div>
+      <div><div class="msg-file-name">${esc(m.fileName||'File')}</div><div class="msg-file-size">${sizeStr}</div></div>
+    </a>${ft}`;
   } else {
-    const w=document.createElement('div');
-    w.className='mw '+(isMe?'me':'th');
-    w.innerHTML=`${!isMe?`<div class="m-sender">${esc(m.senderName||'?')}</div>`:''}
-      <div class="bbl">${esc(m.text)}</div>
-      <div class="m-ft"><span class="m-ts">${fmtT(m.ts)}</span>${isMe?'<span class="m-tks">✓✓</span>':''}</div>`;
-    box.appendChild(w);
+    w.innerHTML=`${sender}<div class="bbl">${esc(m.text)}</div>${ft}`;
   }
+  box.appendChild(w);
   if(scroll) box.scrollTop = box.scrollHeight;
 }
 
@@ -1524,10 +1573,157 @@ window.sendMsg = async function(){
   await updateDoc(doc(db,'chats',selCid), { prev: txt, updatedAt: Date.now() });
 };
 
-window.onKey = function(e){ if(e.key==='Enter'&&!e.shiftKey){ e.preventDefault(); sendMsg(); } };
-window.autoResize = function(t){ t.style.height='auto'; t.style.height=Math.min(t.scrollHeight,90)+'px'; };
-window.attachFile = function(){ toast('File attachment coming soon', false); };
-window.sendVoice = function(){ toast('Voice message coming soon', false); };
+// Shared helper: send any message payload (image/file/audio/etc) to the open chat.
+async function sendMediaMessage(payload, previewLabel){
+  if(!selCid){ toast('Open a chat first', false); return; }
+  await addDoc(collection(db,'chats',selCid,'messages'), {
+    senderId: CU.id, senderName: CU.name, ts: Date.now(), ...payload
+  });
+  await updateDoc(doc(db,'chats',selCid), { prev: previewLabel, updatedAt: Date.now() });
+}
+
+/* ══ FILE ATTACH (any file type) ══
+   Files are embedded directly as base64 data — no paid storage needed.
+   Firestore caps each document at ~1MB, so we cap uploads around 700KB
+   (base64 adds ~33% overhead) to stay safely under that limit. */
+const MAX_FILE_BYTES = 700 * 1024;
+
+window.attachFile = function(){
+  if(!selCid){ toast('Open a chat first', false); return; }
+  // Clicking a real <input type="file"> is what triggers the browser's
+  // native file-picker permission — no extra code needed to "ask" for it.
+  document.getElementById('file-input').click();
+};
+
+window.onFilePicked = async function(e){
+  const file = e.target.files?.[0];
+  e.target.value = '';
+  if(!file) return;
+  if(file.size > MAX_FILE_BYTES){
+    toast(`"${file.name}" is too large (${(file.size/1024/1024).toFixed(1)}MB). Max ~700KB on the free plan.`, false);
+    return;
+  }
+  const dataUrl = await fileToDataUrl(file);
+  if(file.type.startsWith('image/')){
+    await sendMediaMessage({ type:'image', data: dataUrl, fileName: file.name, size: file.size }, '📷 Photo');
+    toast('Photo sent!', true);
+  } else {
+    await sendMediaMessage({ type:'file', data: dataUrl, fileName: file.name, size: file.size }, '📎 '+file.name);
+    toast('File sent!', true);
+  }
+};
+
+function fileToDataUrl(file){
+  return new Promise((resolve,reject)=>{
+    const r=new FileReader();
+    r.onload=()=>resolve(r.result);
+    r.onerror=reject;
+    r.readAsDataURL(file);
+  });
+}
+
+/* ══ CAMERA (instant photo) ══
+   navigator.mediaDevices.getUserMedia() is what triggers the browser's
+   native "Allow camera access?" permission prompt automatically. */
+let __camStream = null;
+
+window.openCamera = async function(){
+  if(!selCid){ toast('Open a chat first', false); return; }
+  openMod('m-camera');
+  document.getElementById('cam-status').textContent = 'Requesting camera access…';
+  document.getElementById('cam-video').style.display='block';
+  document.getElementById('cam-preview').style.display='none';
+  document.getElementById('cam-controls-live').style.display='flex';
+  document.getElementById('cam-controls-preview').style.display='none';
+  try{
+    __camStream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:'user' }, audio:false });
+    document.getElementById('cam-video').srcObject = __camStream;
+    document.getElementById('cam-status').textContent = 'Camera ready';
+  }catch(err){
+    document.getElementById('cam-status').textContent = 'Camera access denied or unavailable.';
+    toast('Camera permission was denied', false);
+  }
+};
+
+window.closeCamera = function(){
+  if(__camStream){ __camStream.getTracks().forEach(t=>t.stop()); __camStream=null; }
+  closeMod('m-camera');
+};
+
+window.captureCameraPhoto = function(){
+  const video=document.getElementById('cam-video');
+  const canvas=document.getElementById('cam-canvas');
+  canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+  canvas.getContext('2d').drawImage(video,0,0);
+  const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+  document.getElementById('cam-preview').src = dataUrl;
+  document.getElementById('cam-preview').style.display='block';
+  video.style.display='none';
+  document.getElementById('cam-controls-live').style.display='none';
+  document.getElementById('cam-controls-preview').style.display='flex';
+};
+
+window.retakeCameraPhoto = function(){
+  document.getElementById('cam-preview').style.display='none';
+  document.getElementById('cam-video').style.display='block';
+  document.getElementById('cam-controls-live').style.display='flex';
+  document.getElementById('cam-controls-preview').style.display='none';
+};
+
+window.sendCameraPhoto = async function(){
+  const dataUrl = document.getElementById('cam-preview').src;
+  await sendMediaMessage({ type:'image', data: dataUrl, fileName:'camera-photo.jpg' }, '📷 Photo');
+  toast('Photo sent!', true);
+  closeCamera();
+};
+
+/* ══ VOICE MESSAGE (mic recording) ══
+   MediaRecorder + getUserMedia({audio:true}) triggers the browser's
+   native microphone permission prompt automatically on first use. */
+let __recStream=null, __recorder=null, __recChunks=[], __recTimer=null, __recSeconds=0, __recording=false;
+
+window.toggleVoiceRecord = async function(){
+  if(!selCid){ toast('Open a chat first', false); return; }
+  if(!__recording){
+    try{
+      __recStream = await navigator.mediaDevices.getUserMedia({ audio:true });
+    }catch(err){
+      toast('Microphone permission was denied', false);
+      return;
+    }
+    __recChunks=[]; __recSeconds=0; __recording=true;
+    document.getElementById('mic-btn').style.color='var(--no)';
+    document.getElementById('rec-indicator').style.display='flex';
+    __recTimer = setInterval(()=>{
+      __recSeconds++;
+      const m=Math.floor(__recSeconds/60), s=__recSeconds%60;
+      document.getElementById('rec-time').textContent = m+':'+String(s).padStart(2,'0');
+      if(__recSeconds>=60) toggleVoiceRecord(); // auto-stop at 60s
+    },1000);
+    __recorder = new MediaRecorder(__recStream);
+    __recorder.ondataavailable = e=>{ if(e.data.size>0) __recChunks.push(e.data); };
+    __recorder.onstop = async ()=>{
+      const blob = new Blob(__recChunks, { type:'audio/webm' });
+      __recStream.getTracks().forEach(t=>t.stop());
+      if(blob.size > MAX_FILE_BYTES){
+        toast('Recording too long/large to send — try a shorter clip', false);
+        return;
+      }
+      const dataUrl = await new Promise((resolve)=>{
+        const r=new FileReader(); r.onload=()=>resolve(r.result); r.readAsDataURL(blob);
+      });
+      await sendMediaMessage({ type:'audio', data: dataUrl }, '🎤 Voice message');
+      toast('Voice message sent!', true);
+    };
+    __recorder.start();
+  } else {
+    __recording=false;
+    clearInterval(__recTimer);
+    document.getElementById('mic-btn').style.color='';
+    document.getElementById('rec-indicator').style.display='none';
+    if(__recorder && __recorder.state!=='inactive') __recorder.stop();
+  }
+};
 window.syncNow = function(){ toast('Already live — realtime sync active', true); };
 
 window.exportChat = async function(){
