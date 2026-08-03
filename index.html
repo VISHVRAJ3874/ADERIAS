@@ -638,6 +638,34 @@ input,textarea,select,button{font-family:var(--f)}
 }
 .mob-btn{display:none}
 
+/* ── TIER BADGE ── */
+.tier-badge{padding:3px 10px;border-radius:99px;border:1px solid;font-size:10px;font-weight:700;font-family:var(--fm);white-space:nowrap;flex-shrink:0;display:inline-flex;align-items:center;gap:4px}
+.tb-leader{border-color:rgba(244,185,66,.4);background:rgba(244,185,66,.1);color:var(--g4)}
+.tb-premium{border-color:rgba(198,138,78,.4);background:rgba(198,138,78,.1);color:var(--g3)}
+.tb-free{border-color:var(--b4);background:var(--bg-card);color:var(--t2)}
+
+/* ── UPGRADE MODAL ── */
+.upg-plans{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.upg-card{padding:16px 14px;background:var(--bg-card);border:1px solid var(--b4);border-radius:var(--r14);display:flex;flex-direction:column;gap:10px;cursor:pointer;transition:.2s;position:relative}
+.upg-card:hover{border-color:var(--b3);transform:translateY(-2px)}
+.upg-card.upg-best{border-color:rgba(198,138,78,.3);background:rgba(198,138,78,.04)}
+.upg-badge{position:absolute;top:-9px;left:50%;transform:translateX(-50%);font-size:8.5px;font-weight:800;letter-spacing:.8px;font-family:var(--fm);padding:3px 10px;border-radius:99px;background:linear-gradient(135deg,var(--g1),var(--g2));color:#f5f0e6}
+.upg-card-top{display:flex;flex-direction:column;gap:2px}
+.upg-card-name{font-size:13px;font-weight:700;color:var(--t1)}
+.upg-card-price{font-size:30px;font-weight:800;color:var(--t0);font-family:var(--fh)}
+.upg-card-price span{font-size:13px;color:var(--t2);font-weight:500}
+.upg-card-feat{font-size:11.5px;color:var(--t2);line-height:1.7;flex:1}
+
+/* ── LEADER PANEL V2 ── */
+.lp-act{padding:5px 10px!important;font-size:11px!important;flex:none}
+.rt-prem{color:var(--g3);border-color:rgba(198,138,78,.3);background:rgba(198,138,78,.08)}
+.rt-ban{color:var(--no);border-color:rgba(226,104,90,.3);background:rgba(226,104,90,.08)}
+.audit-row{padding:5px 8px;background:var(--bg-card);border:1px solid var(--b4);border-radius:var(--r6);display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+.audit-ts{color:var(--t3);font-size:10px}
+.audit-act{color:var(--g3);font-weight:700;font-size:10.5px}
+.audit-who{color:var(--t1)}
+.audit-tgt{color:var(--g4)}
+
 </style>
 </head>
 <body>
@@ -769,6 +797,7 @@ input,textarea,select,button{font-family:var(--f)}
         <div class="me-handle" id="me-handle">@handle</div>
       </div>
       <button class="reg-pill rp-on" id="reg-pill" onclick="toggleReg()">● Live</button>
+      <span class="tier-badge" id="tier-badge" style="display:none"></span>
     </div>
   </div>
 
@@ -1074,27 +1103,67 @@ input,textarea,select,button{font-family:var(--f)}
   </div>
 </div>
 
-<!-- ══════ MODAL: LEADER PANEL ══════ -->
+<!-- ══════ MODAL: LEADER PANEL (V2) ══════ -->
 <div class="ov" id="m-leader">
-  <div class="modal" style="width:480px">
+  <div class="modal" style="width:520px">
     <button class="mx" onclick="closeMod('m-leader')">✕</button>
     <div class="m-hd">
       <div class="m-ic" style="background:rgba(95,138,128,.1);color:var(--a2);font-size:28px">👑</div>
-      <div><h3>Leader Panel</h3><p class="sub" style="font-family:var(--fm);font-size:11.5px">Full visibility — all users, activity, storage</p></div>
+      <div><h3>Leader Dashboard</h3><p class="sub" style="font-family:var(--fm);font-size:11.5px">Full visibility — users, approvals, activity, audit</p></div>
     </div>
     <div class="lp-grid">
       <div class="lp-box"><div class="lp-val" id="lp-users">0</div><div class="lp-lbl">Total Users</div></div>
+      <div class="lp-box"><div class="lp-val" id="lp-prem">0</div><div class="lp-lbl">Premium</div></div>
+      <div class="lp-box"><div class="lp-val" id="lp-appr">0</div><div class="lp-lbl">Approved</div></div>
+      <div class="lp-box"><div class="lp-val" id="lp-ban">0</div><div class="lp-lbl">Banned</div></div>
+      <div class="lp-box"><div class="lp-val" id="lp-grp">0</div><div class="lp-lbl">Groups</div></div>
       <div class="lp-box"><div class="lp-val" id="lp-chats">0</div><div class="lp-lbl">Active Chats</div></div>
       <div class="lp-box"><div class="lp-val" id="lp-msgs">0</div><div class="lp-lbl">Messages</div></div>
       <div class="lp-box"><div class="lp-val" id="lp-reg">0</div><div class="lp-lbl">Registered</div></div>
     </div>
     <div class="lp-path" id="lp-path">☁ Firestore</div>
-    <div style="font-size:10px;font-weight:600;letter-spacing:1.5px;color:var(--t2);text-transform:uppercase;font-family:var(--fm);margin-bottom:7px">All Users</div>
-    <div id="lp-list" style="display:flex;flex-direction:column;gap:6px;max-height:280px;overflow-y:auto"></div>
+    <div class="sec-lbl">Broadcast Announcement</div>
+    <div style="display:flex;gap:7px">
+      <input class="fi" id="lp-broadcast" type="text" placeholder="Message to all General chat members…" style="flex:1">
+      <button class="mb prim" style="flex:none;padding:0 16px" onclick="broadcastAnnouncement()">📢</button>
+    </div>
+    <div class="sec-lbl">All Users</div>
+    <div id="lp-list" style="display:flex;flex-direction:column;gap:6px;max-height:260px;overflow-y:auto"></div>
+    <div class="sec-lbl">Recent Activity (Audit Log)</div>
+    <div id="lp-audit" style="display:flex;flex-direction:column;gap:3px;max-height:140px;overflow-y:auto;font-family:var(--fm);font-size:11px"></div>
     <div class="mb-row">
       <button class="mb gho" onclick="closeMod('m-leader')">Close</button>
       <button class="mb gold" onclick="exportAll()">⬇ Export All Data</button>
     </div>
+  </div>
+</div>
+
+<!-- ══════ MODAL: UPGRADE ══════ -->
+<div class="ov" id="m-upgrade">
+  <div class="modal" style="width:440px">
+    <button class="mx" onclick="closeMod('m-upgrade')">✕</button>
+    <div class="m-hd">
+      <div class="m-ic" style="background:rgba(244,185,66,.1);color:var(--au2);font-size:24px">★</div>
+      <div><h3>Upgrade to Premium</h3><p class="sub" id="upg-reason">Unlock everything Aderias has to offer.</p></div>
+    </div>
+    <div class="upg-plans">
+      <div class="upg-card" onclick="choosePlan('monthly')">
+        <div class="upg-card-top"><div class="upg-card-name">Monthly</div><div class="upg-card-price">$20<span>/mo</span></div></div>
+        <div class="upg-card-feat">✓ Unlimited everything<br>✓ Cancel anytime</div>
+        <button class="mb prim">Choose Monthly</button>
+      </div>
+      <div class="upg-card upg-best" onclick="choosePlan('yearly')">
+        <div class="upg-badge">BEST VALUE</div>
+        <div class="upg-card-top"><div class="upg-card-name">Yearly</div><div class="upg-card-price">$17<span>/mo</span></div></div>
+        <div class="upg-card-feat">✓ Unlimited everything<br>✓ Save $36/year<br>✓ Billed $204 annually</div>
+        <button class="mb gold">Choose Yearly</button>
+      </div>
+    </div>
+    <div style="font-size:12px;color:var(--t2);text-align:center;line-height:1.7;padding:8px 0">
+      <strong style="color:var(--t1)">Already have a Leader approval?</strong><br>
+      Approved users get all premium features for free — no payment needed.
+    </div>
+    <button class="mb gho" onclick="closeMod('m-upgrade')">Maybe Later</button>
   </div>
 </div>
 
@@ -1276,6 +1345,25 @@ const pickGrad = s => { let h=0; for(let i=0;i<s.length;i++) h+=s.charCodeAt(i);
 const LEADER_EMAILS = ['vishvrajsinhgohil845@gmail.com','vishvrajsinhgohil435@gmail.com'];
 const isLdr = u => u && LEADER_EMAILS.includes((u.email||'').toLowerCase().trim());
 
+/* ══ TIER SYSTEM ══ */
+const FREE_LIMITS = { maxGroups:1, maxMembersPerGroup:10, maxFetchers:5, maxApiCallsPerDay:100, maxStorageMB:500, syncIntervalMin:30, historyDays:7 };
+function userTier(u){ if(!u) return 'free'; if(isLdr(u)) return 'leader'; if(u.tier==='premium' || u.premiumApproved) return 'premium'; return 'free'; }
+function isPremium(u){ return userTier(u) !== 'free'; }
+function canCreateGroup(u){ if(userTier(u)!=='free') return {ok:true}; const groups = Object.values(window.__chats||{}).filter(c=>c.type==='group'); return groups.length < FREE_LIMITS.maxGroups ? {ok:true} : {ok:false, limit:'groups'}; }
+function canAddMember(u, group){ if(userTier(u)!=='free') return {ok:true}; return (group.members||[]).length < FREE_LIMITS.maxMembersPerGroup ? {ok:true} : {ok:false, limit:'members'}; }
+window.showUpgrade = function(reason){
+  const el=document.getElementById('m-upgrade');
+  if(reason) document.getElementById('upg-reason').textContent = reason;
+  openMod('m-upgrade');
+};
+window.choosePlan = function(plan){
+  toast(plan==='yearly' ? 'Yearly plan selected — $204/year ($17/mo)' : 'Monthly plan selected — $20/mo', true);
+  toast('Ask your Leader to approve you for instant premium!', false);
+};
+async function logAction(action, targetId, targetName, details){
+  try{ await addDoc(collection(db,'audit_log'), { action, actorId:CU?.id||'', actorName:CU?.name||'', targetId:targetId||'', targetName:targetName||'', details:details||'', ts:Date.now() }); }catch(e){}
+}
+
 function phoneMatch(a,b){
   const ca=cp(a),cb=cp(b);
   if(!ca||!cb||ca.length<6||cb.length<6) return false;
@@ -1333,6 +1421,7 @@ window.doAuth = async function(){
       const profile = {
         id: uid, name: nm, username, email: emRaw || '', phone: fullPhone,
         bio: '', grad: pickGrad(nm), registered: true, role: 'user',
+        tier: 'free', premiumApproved: false, banned: false,
         joinedAt: Date.now()
       };
       await setDoc(doc(db,'users',uid), profile);
@@ -1423,9 +1512,15 @@ function enterApp(){
   document.getElementById('me-name').textContent=CU.name||'You';
   document.getElementById('me-handle').textContent='@'+(CU.username||'user');
   document.getElementById('ldr-btn').style.display=isLdr(CU)?'flex':'none';
-  updateRegPill(); buildCurrGrids();
-  listenChats();
-  renderStoriesRow();
+  updateTierBadge(); updateRegPill(); buildCurrGrids();
+  listenChats(); renderStoriesRow();
+}
+function updateTierBadge(){
+  const el=document.getElementById('tier-badge'); if(!el||!CU) return;
+  const t=userTier(CU);
+  el.className='tier-badge tb-'+t;
+  el.textContent = t==='leader'?'👑 Leader':t==='premium'?'★ Premium':'Free';
+  el.style.display='inline-flex';
 }
 
 /* ══ LIVE CHAT LIST (realtime) ══ */
@@ -1867,9 +1962,12 @@ window.__pickRecipient = async function(uid){
 window.createGroup = async function(){
   const nm=document.getElementById('grp-nm').value.trim();
   if(!nm){toast('Enter a group name', false);return;}
+  const chk=canCreateGroup(CU);
+  if(!chk.ok){ showUpgrade('Free users can only create '+FREE_LIMITS.maxGroups+' group. Upgrade for unlimited groups.'); return; }
   const cid='grp_'+Date.now();
-  await setDoc(doc(db,'chats',cid), { id:cid, name:nm, type:'group', members:[CU.id], updatedAt: Date.now(), prev:'' });
+  await setDoc(doc(db,'chats',cid), { id:cid, name:nm, type:'group', members:[CU.id], moderators:[], createdBy:CU.id, isPublic:false, inviteCode: cid.slice(-6), updatedAt: Date.now(), prev:'' });
   await addDoc(collection(db,'chats',cid,'messages'), { type:'system', text:`${CU.name} created "${nm}"`, ts: Date.now() });
+  await logAction('create_group', cid, nm);
   closeMod('m-group'); openChat(cid);
   toast(`Group "${nm}" created!`, true);
 };
@@ -2057,7 +2155,7 @@ window.payViaUpi = async function(){
   }
 };
 
-/* ══ LEADER PANEL ══ */
+/* ══ LEADER PANEL (V2) ══ */
 window.loadLeaderPanel = async function(){
   const usersSnap = await getDocs(collection(db,'users'));
   const users = usersSnap.docs.map(d=>d.data());
@@ -2067,21 +2165,88 @@ window.loadLeaderPanel = async function(){
     const ms = await getDocs(collection(db,'chats',c.id,'messages'));
     msgCount += ms.size;
   }
+  const premiumUsers = users.filter(u=>userTier(u)==='premium').length;
+  const approvedUsers = users.filter(u=>u.premiumApproved).length;
+  const bannedUsers = users.filter(u=>u.banned).length;
+  const groups = chatsSnap.docs.filter(d=>d.data().type==='group').length;
+
   document.getElementById('lp-users').textContent = users.length;
   document.getElementById('lp-chats').textContent = chatsSnap.size;
   document.getElementById('lp-msgs').textContent = msgCount;
   document.getElementById('lp-reg').textContent = users.filter(u=>u.registered).length;
+  const elPrem=document.getElementById('lp-prem'); if(elPrem) elPrem.textContent = premiumUsers;
+  const elAppr=document.getElementById('lp-appr'); if(elAppr) elAppr.textContent = approvedUsers;
+  const elGrp=document.getElementById('lp-grp'); if(elGrp) elGrp.textContent = groups;
+  const elBan=document.getElementById('lp-ban'); if(elBan) elBan.textContent = bannedUsers;
   document.getElementById('lp-path').textContent = '☁ Cloud Firestore (aderias-c1a7b)';
 
   const el=document.getElementById('lp-list'); el.innerHTML='';
   users.forEach(u=>{
+    const t=userTier(u);
     const d=document.createElement('div'); d.className='u-card';
+    const tierTag = t==='leader'?'<span class="role-tag rt-ldr">👑 Leader</span>':t==='premium'?'<span class="role-tag rt-prem">★ Premium</span>':'<span class="role-tag rt-usr">Free</span>';
+    const statusTag = u.banned?'<span class="role-tag rt-ban">Banned</span>':'';
+    const approveBtn = t==='free' ? `<button class="mb ok lp-act" onclick="approvePremium('${u.id}')">★ Approve</button>` : `<button class="mb gho lp-act" onclick="removeApproval('${u.id}')">Revoke</button>`;
+    const banBtn = u.banned ? `<button class="mb ok lp-act" onclick="restoreUser('${u.id}')">Restore</button>` : `<button class="mb red lp-act" onclick="banUser('${u.id}')">Ban</button>`;
     d.innerHTML=`<div class="av" style="width:34px;height:34px;font-size:11px;background:${u.grad||pickGrad(u.name||'?')}">${ini(u.name||'?')}</div>
-      <div style="flex:1"><div class="uc-name">${esc(u.name||'Unknown')}</div>
+      <div style="flex:1;min-width:0"><div class="uc-name">${esc(u.name||'Unknown')} ${tierTag} ${statusTag}</div>
       <div class="uc-meta">@${u.username||''} · ${u.phone||u.email||'—'} · joined ${fmtT(u.joinedAt||Date.now())}</div></div>
-      <div class="uc-live ${u.registered?'y':'n'}">${u.registered?'● Live':'○'}</div>`;
+      <div style="display:flex;gap:4px;flex-shrink:0">${approveBtn}${banBtn}</div>`;
     el.appendChild(d);
   });
+
+  const auditSnap = await getDocs(query(collection(db,'audit_log'), orderBy('ts','desc'), limit(20)));
+  const auditEl=document.getElementById('lp-audit');
+  if(auditEl){
+    auditEl.innerHTML='';
+    if(auditSnap.empty){ auditEl.innerHTML='<div style="font-size:11px;color:var(--t3);padding:4px 0">No recent activity.</div>'; }
+    auditSnap.forEach(d=>{ const a=d.data(); const row=document.createElement('div'); row.className='audit-row';
+      row.innerHTML=`<span class="audit-ts">${fmtT(a.ts)}</span> <span class="audit-act">${esc(a.action)}</span> <span class="audit-who">${esc(a.actorName||'?')}</span>${a.targetName?` → <span class="audit-tgt">${esc(a.targetName)}</span>`:''}`;
+      auditEl.appendChild(row);
+    });
+  }
+};
+
+window.approvePremium = async function(uid){
+  await updateDoc(doc(db,'users',uid), { tier:'premium', premiumApproved:true });
+  const snap=await getDoc(doc(db,'users',uid)); const u=snap.exists()?snap.data():{};
+  await logAction('approve_premium', uid, u.name||'');
+  toast(`Premium approved for ${u.name||'user'} — permanent!`, true);
+  loadLeaderPanel();
+};
+window.removeApproval = async function(uid){
+  await updateDoc(doc(db,'users',uid), { tier:'free', premiumApproved:false });
+  const snap=await getDoc(doc(db,'users',uid)); const u=snap.exists()?snap.data():{};
+  await logAction('remove_premium', uid, u.name||'');
+  toast(`Premium revoked for ${u.name||'user'}`, false);
+  loadLeaderPanel();
+};
+window.banUser = async function(uid){
+  await updateDoc(doc(db,'users',uid), { banned:true });
+  const snap=await getDoc(doc(db,'users',uid)); const u=snap.exists()?snap.data():{};
+  await logAction('ban_user', uid, u.name||'');
+  toast(`${u.name||'User'} banned`, false);
+  loadLeaderPanel();
+};
+window.restoreUser = async function(uid){
+  await updateDoc(doc(db,'users',uid), { banned:false });
+  const snap=await getDoc(doc(db,'users',uid)); const u=snap.exists()?snap.data():{};
+  await logAction('restore_user', uid, u.name||'');
+  toast(`${u.name||'User'} restored`, true);
+  loadLeaderPanel();
+};
+window.broadcastAnnouncement = async function(){
+  const txt=document.getElementById('lp-broadcast')?.value.trim();
+  if(!txt){toast('Write a message first',false);return;}
+  const ref=doc(db,'chats','general');
+  const snap=await getDoc(ref);
+  if(snap.exists()){
+    await addDoc(collection(db,'chats','general','messages'), { type:'system', text:`📢 Announcement: ${txt}`, ts:Date.now() });
+    await updateDoc(ref, { prev:`📢 ${txt.slice(0,40)}`, updatedAt:Date.now() });
+  }
+  await logAction('broadcast', '', '', txt);
+  document.getElementById('lp-broadcast').value='';
+  toast('Announcement sent to General chat!', true);
 };
 
 window.exportAll = async function(){
@@ -2091,13 +2256,6 @@ window.exportAll = async function(){
   const b=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='aderias_export_'+Date.now()+'.json';a.click();
   toast('All data exported', true);
-};
-
-// NOTE: the old "view user vault password" feature depended on a local
-// server file vault (D:\zero data) and cannot work with Firestore as-is.
-// It's disabled here; ask if you want a Firestore-based audit-log version instead.
-window.viewUser = function(){
-  toast('Vault viewer needs local server — not available in cloud mode', false);
 };
 
 /* ══ MODALS ══ */
