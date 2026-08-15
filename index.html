@@ -7,52 +7,55 @@
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Inter:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 /* ════════════════════════════════════════════════════════════
-   ADERIAS — AURORA DESIGN SYSTEM
-   Palette: Deep teal + emerald + warm gold
-   Modern, premium, fresh messenger aesthetic
+   ADERIAS — GLASSMORPHISM DESIGN SYSTEM
+   Palette: Lavender + periwinkle + soft peach gradients
+   Light frosted-glass messenger aesthetic
 ════════════════════════════════════════════════════════════ */
 *,::before,::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 :root{
-  /* Backgrounds — soft sky-blue light theme */
-  --bg-main:#e8f0f7;
-  --bg-sidebar:#f0f5fa;
-  --bg-panel:#ffffff;
-  --bg-chat:#eef4f9;
-  --bg-card:#ffffff;
-  --bg-input:#ffffff;
-  --bg-hover:#e0eaf3;
+  /* Backgrounds — soft pastel glass theme */
+  --bg-main:linear-gradient(135deg,#f3eeff 0%,#fde8f0 35%,#e8f0ff 70%,#f0ecff 100%);
+  --bg-sidebar:rgba(255,255,255,.55);
+  --bg-panel:rgba(255,255,255,.62);
+  --bg-chat:rgba(255,255,255,.42);
+  --bg-card:rgba(255,255,255,.72);
+  --bg-input:rgba(255,255,255,.78);
+  --bg-hover:rgba(124,92,255,.08);
+  --glass-blur:blur(22px);
+  --glass-border:1px solid rgba(255,255,255,.65);
+  --glass-shadow:0 8px 32px rgba(124,92,255,.12), inset 0 1px 0 rgba(255,255,255,.8);
 
-  /* Emerald — primary accent */
-  --g1:#0d6e4f;  /* deep emerald */
-  --g2:#10b981;  /* primary emerald */
-  --g3:#34d399;  /* medium emerald */
-  --g4:#6ee7b7;  /* light emerald */
-  --g5:#a7f3d0;  /* pale emerald */
-  --g6:#c7e9d6;  /* emerald tint (selection bg) */
-  --g7:#e8f7ef;  /* whisper emerald (badge bg) */
+  /* Purple — primary accent */
+  --g1:#5b3fd4;
+  --g2:#7c5cff;
+  --g3:#9b7dff;
+  --g4:#b89dff;
+  --g5:#d4c4ff;
+  --g6:rgba(124,92,255,.14);
+  --g7:rgba(124,92,255,.08);
 
-  /* Gold — secondary accent (warm contrast) */
-  --a1:#b8860b;
-  --a2:#d4a017;
-  --a3:#e6c33d;
-  --a4:#f0d96e;
-  --a5:#fbe8a0;
+  /* Peach/gold — secondary accent */
+  --a1:#e8784a;
+  --a2:#f0986a;
+  --a3:#ffb088;
+  --a4:#ffd0b8;
+  --a5:#ffe8dc;
 
-  /* Text — dark on light */
-  --t0:#1a2e25;   /* primary text */
-  --t1:#4a6356;   /* secondary text */
-  --t2:#6b8a7a;   /* muted text */
-  --t3:#8da89a;   /* faint text */
-  --t4:#a8c0b4;   /* placeholder / very faint */
+  /* Text */
+  --t0:#2d2640;
+  --t1:#5a5070;
+  --t2:#8a82a0;
+  --t3:#aaa3b8;
+  --t4:#c4bfd4;
 
   /* Borders */
-  --b1:rgba(16,185,129,.16);
-  --b2:rgba(16,185,129,.3);
-  --b3:rgba(16,185,129,.55);
-  --b4:#d4dfe8;
+  --b1:rgba(124,92,255,.14);
+  --b2:rgba(124,92,255,.28);
+  --b3:rgba(124,92,255,.45);
+  --b4:rgba(255,255,255,.55);
 
   /* Status */
-  --ok:#10b981;
+  --ok:#22c55e;
   --no:#ef4444;
   --warn:#f59e0b;
 
@@ -67,11 +70,18 @@
 
 html,body{
   width:100%;height:100%;overflow:hidden;
-  background-color:var(--bg-main);
+  background:var(--bg-main);
   color:var(--t0);
   font-family:var(--f);
   font-size:14px;
   line-height:1.55;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(124,92,255,.18) 0%, transparent 42%),
+    radial-gradient(circle at 85% 15%, rgba(255,160,200,.2) 0%, transparent 38%),
+    radial-gradient(circle at 70% 80%, rgba(140,180,255,.16) 0%, transparent 40%);
 }
 ::-webkit-scrollbar{width:3px;height:3px}
 ::-webkit-scrollbar-thumb{background:var(--b2);border-radius:99px}
@@ -175,17 +185,109 @@ input,textarea,select,button{font-family:var(--f)}
 .off-note.on{display:block}
 
 /* ══════════════════════════════════════════
-   MAIN APP
+   MAIN APP — 3-column glass layout
 ══════════════════════════════════════════ */
-#s-app{flex-direction:row;align-items:stretch;z-index:1}
+#s-app{flex-direction:row;align-items:stretch;z-index:1;position:relative}
 
-/* ── SIDEBAR ── */
+/* Icon nav rail */
+.nav-rail{
+  width:72px;flex-shrink:0;
+  background:rgba(255,255,255,.45);
+  backdrop-filter:var(--glass-blur);
+  border-right:var(--glass-border);
+  display:flex;flex-direction:column;align-items:center;
+  padding:14px 0;gap:6px;z-index:6;
+  box-shadow:var(--glass-shadow);
+}
+.nav-brand{
+  font-family:var(--fh);font-size:11px;font-weight:700;
+  color:var(--g1);text-align:center;line-height:1.2;
+  margin-bottom:8px;padding:0 6px;
+}
+.nav-brand span{font-size:14px;display:block}
+.nav-item{
+  width:46px;height:46px;border-radius:14px;border:none;
+  background:transparent;color:var(--t2);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:.18s;position:relative;font-size:18px;
+}
+.nav-item:hover{background:var(--g7);color:var(--g1)}
+.nav-item.on{
+  background:linear-gradient(145deg,var(--g2),var(--g1));
+  color:#fff;box-shadow:0 6px 20px rgba(124,92,255,.35);
+}
+.nav-badge{
+  position:absolute;top:4px;right:4px;
+  min-width:16px;height:16px;padding:0 4px;
+  background:var(--g2);color:#fff;font-size:9px;font-weight:800;
+  border-radius:99px;display:flex;align-items:center;justify-content:center;
+}
+.nav-spacer{flex:1}
+.nav-premium{
+  margin:8px;width:calc(100% - 16px);padding:10px 8px;
+  background:linear-gradient(145deg,#5b3fd4,#7c5cff);
+  border-radius:14px;text-align:center;cursor:pointer;
+  border:none;color:#fff;font-size:9px;font-weight:700;line-height:1.4;
+  box-shadow:0 8px 24px rgba(91,63,212,.35);
+}
+.nav-premium b{display:block;font-size:10px;margin-bottom:4px}
+
+/* App shell (topbar + content + bottom) */
+.app-shell{flex:1;display:flex;flex-direction:column;min-width:0;z-index:2}
+.app-topbar{
+  display:flex;align-items:center;gap:12px;
+  padding:10px 18px;flex-shrink:0;
+  background:rgba(255,255,255,.5);
+  backdrop-filter:var(--glass-blur);
+  border-bottom:var(--glass-border);
+}
+.global-srch{
+  flex:1;max-width:420px;display:flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,.72);border:var(--glass-border);
+  border-radius:var(--r99);padding:9px 14px;
+  box-shadow:0 2px 12px rgba(124,92,255,.06);
+}
+.global-srch input{flex:1;border:none;background:none;outline:none;color:var(--t0);font-size:13px}
+.global-srch input::placeholder{color:var(--t3)}
+.global-srch kbd{font-size:10px;color:var(--t3);font-family:var(--fm);padding:2px 6px;background:var(--g7);border-radius:6px}
+.top-actions{display:flex;align-items:center;gap:6px;margin-left:auto}
+.top-btn{
+  width:36px;height:36px;border-radius:12px;border:var(--glass-border);
+  background:rgba(255,255,255,.65);color:var(--t2);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:.15s;position:relative;
+}
+.top-btn:hover{background:#fff;color:var(--g1)}
+.top-notif-dot{position:absolute;top:6px;right:6px;width:7px;height:7px;background:var(--no);border-radius:50%;border:2px solid #fff}
+.app-content{flex:1;display:flex;min-height:0;overflow:hidden}
+.app-bottombar{
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  padding:8px 16px;flex-shrink:0;
+  background:rgba(255,255,255,.52);
+  backdrop-filter:var(--glass-blur);
+  border-top:var(--glass-border);
+}
+.bottom-user{display:flex;align-items:center;gap:10px;min-width:0}
+.bottom-user .me-av{width:34px;height:34px;font-size:11px}
+.bottom-user-info{min-width:0}
+.bottom-user-name{font-size:12px;font-weight:700;color:var(--t0);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bottom-user-meta{font-size:10px;color:var(--t2);font-family:var(--fm);display:flex;align-items:center;gap:6px}
+.online-dot{width:6px;height:6px;border-radius:50%;background:var(--ok);box-shadow:0 0 6px var(--ok)}
+.secure-banner{
+  flex:1;max-width:520px;padding:10px 18px;border-radius:var(--r99);
+  background:linear-gradient(90deg,var(--g2),var(--a2));
+  color:#fff;font-size:12px;font-weight:600;text-align:center;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  box-shadow:0 6px 24px rgba(124,92,255,.25);
+}
+
+/* ── SIDEBAR (chat list) ── */
 .sb{
-  width:280px;flex-shrink:0;
+  width:320px;flex-shrink:0;
   background:var(--bg-sidebar);
-  border-right:1px solid var(--b4);
+  backdrop-filter:var(--glass-blur);
+  border-right:var(--glass-border);
   display:flex;flex-direction:column;overflow:hidden;z-index:4;
-  position:relative;
+  position:relative;box-shadow:var(--glass-shadow);
 }
 /* Subtle leaf decoration in sidebar */
 .sb::after{
@@ -198,7 +300,7 @@ input,textarea,select,button{font-family:var(--f)}
 
 .sb-top{padding:16px 14px 0;flex-shrink:0}
 .sb-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-.sb-brand{font-family:var(--fh);font-size:22px;font-weight:700;color:var(--t0)}
+.sb-brand{font-family:var(--fh);font-size:22px;font-weight:700;background:linear-gradient(135deg,var(--g1),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
 .sb-actions{display:flex;gap:3px}
 .sba{
   width:32px;height:32px;border-radius:var(--r10);
@@ -229,7 +331,7 @@ input,textarea,select,button{font-family:var(--f)}
 .sb-list{flex:1;overflow-y:auto;padding:5px 6px}
 .ci{display:flex;align-items:center;gap:10px;padding:10px 8px;border-radius:var(--r14);cursor:pointer;transition:.15s;position:relative}
 .ci:hover{background:var(--bg-hover)}
-.ci.sel{background:var(--bg-card);border:1px solid var(--b2)}
+.ci.sel{background:var(--g6);border:1px solid var(--b2);box-shadow:0 4px 16px rgba(124,92,255,.1)}
 .av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;flex-shrink:0;font-size:12px;letter-spacing:-.5px;position:relative}
 .av.sq{border-radius:var(--r10)}
 .av-st{position:absolute;bottom:0;right:0;width:9px;height:9px;border-radius:50%;border:2px solid var(--bg-sidebar)}
@@ -239,7 +341,7 @@ input,textarea,select,button{font-family:var(--f)}
 .ci-name{font-size:13.5px;font-weight:600;color:var(--t0);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:140px}
 .ci-ts{font-size:10px;color:var(--t3);flex-shrink:0;font-family:var(--fm)}
 .ci-prev{font-size:12px;color:var(--t2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:1px;display:flex;align-items:center;gap:4px}
-.ci-unr{background:var(--g2);color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:99px;flex-shrink:0;margin-left:auto}
+.ci-unr{background:linear-gradient(135deg,var(--g2),var(--g1));color:#fff;font-size:9px;font-weight:700;padding:1px 6px;border-radius:99px;flex-shrink:0;margin-left:auto}
 
 /* sidebar footer */
 .sb-foot{
@@ -310,8 +412,8 @@ input,textarea,select,button{font-family:var(--f)}
 .mw.th{align-self:flex-start;align-items:flex-start}
 .m-sender{font-size:10.5px;color:var(--g3);font-weight:600;margin-bottom:3px;font-family:var(--fm)}
 .bbl{padding:10px 14px;border-radius:16px;font-size:13.5px;line-height:1.58;word-break:break-word}
-.me .bbl{background:var(--g2);color:#fff;border-bottom-right-radius:3px}
-.th .bbl{background:var(--bg-card);color:var(--t0);border:1px solid var(--b4);border-bottom-left-radius:3px}
+.me .bbl{background:linear-gradient(145deg,var(--g2),var(--g1));color:#fff;border-bottom-right-radius:3px;box-shadow:0 4px 16px rgba(124,92,255,.2)}
+.th .bbl{background:rgba(255,255,255,.78);color:var(--t0);border:var(--glass-border);border-bottom-left-radius:3px;backdrop-filter:blur(8px)}
 .m-ft{display:flex;align-items:center;gap:5px;margin-top:3px}
 .m-ts{font-size:9.5px;color:var(--t3);font-family:var(--fm)}
 .m-tks{color:var(--ok);font-size:11px}
@@ -352,21 +454,25 @@ input,textarea,select,button{font-family:var(--f)}
 /* Welcome / empty state */
 .empty-st{
   flex:1;display:flex;flex-direction:column;align-items:center;
-  justify-content:center;gap:10px;color:var(--t2);z-index:2;
+  justify-content:center;gap:14px;color:var(--t2);z-index:2;
   position:relative;overflow:hidden;
+  background:var(--bg-chat);backdrop-filter:var(--glass-blur);
 }
-/* Botanical illustration in center */
-.empty-botanical{
-  width:160px;height:160px;
-  background:var(--g7);border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  border:1px solid var(--b2);
-  margin-bottom:8px;
-  position:relative;overflow:hidden;
+.empty-hero{
+  width:min(420px,85%);max-height:340px;object-fit:contain;
+  filter:drop-shadow(0 20px 40px rgba(124,92,255,.18));
+  animation:floatHero 4s ease-in-out infinite;
 }
-.empty-botanical svg{width:100px;height:120px;opacity:.7}
-.empty-title{font-family:var(--fh);font-size:22px;font-weight:700;color:var(--t0);letter-spacing:.3px}
-.empty-sub{font-size:12.5px;color:var(--t2);text-align:center}
+@keyframes floatHero{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.empty-title{
+  font-family:var(--fh);font-size:26px;font-weight:700;
+  background:linear-gradient(135deg,var(--g1),var(--a2));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  letter-spacing:.3px;
+}
+.empty-sub{font-size:13px;color:var(--t2);text-align:center;max-width:340px;line-height:1.6}
+.empty-arrow{margin-top:8px;opacity:.45;animation:bounceArr 2s ease-in-out infinite}
+@keyframes bounceArr{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
 
 /* Welcome chat header message */
 .welcome-msg{
@@ -668,6 +774,43 @@ input,textarea,select,button{font-family:var(--f)}
 .audit-who{color:var(--t1)}
 .audit-tgt{color:var(--g4)}
 
+/* ── CALL OVERLAY ── */
+#call-overlay{
+  position:fixed;inset:0;z-index:8000;
+  background:rgba(45,38,64,.75);backdrop-filter:blur(18px);
+  display:none;flex-direction:column;align-items:center;justify-content:center;gap:16px;
+  padding:20px;
+}
+#call-overlay.open{display:flex}
+.call-stage{
+  position:relative;width:min(720px,96vw);aspect-ratio:16/10;
+  background:rgba(255,255,255,.12);border:var(--glass-border);
+  border-radius:24px;overflow:hidden;
+  box-shadow:0 24px 80px rgba(0,0,0,.25);
+}
+.call-remote{width:100%;height:100%;object-fit:cover;background:#1a1528}
+.call-local{
+  position:absolute;bottom:16px;right:16px;width:140px;height:100px;
+  object-fit:cover;border-radius:14px;border:2px solid rgba(255,255,255,.6);
+  background:#2d2640;box-shadow:0 8px 24px rgba(0,0,0,.3);
+}
+.call-local.hidden{display:none}
+.call-info{text-align:center;color:#fff}
+.call-info h2{font-family:var(--fh);font-size:22px;margin-bottom:4px}
+.call-info p{font-size:13px;opacity:.75}
+.call-controls{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.call-btn{
+  width:52px;height:52px;border-radius:50%;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:20px;
+  transition:.15s;background:rgba(255,255,255,.18);color:#fff;
+  backdrop-filter:blur(8px);
+}
+.call-btn:hover{transform:scale(1.08);background:rgba(255,255,255,.28)}
+.call-btn.on{background:var(--g2);box-shadow:0 0 20px rgba(124,92,255,.5)}
+.call-btn.end{background:var(--no);box-shadow:0 0 20px rgba(239,68,68,.4)}
+.call-btn.end:hover{background:#dc2626}
+.hb.call-active{color:var(--g2);border-color:var(--b3);background:var(--g7)}
+
 </style>
 </head>
 <body>
@@ -748,7 +891,53 @@ input,textarea,select,button{font-family:var(--f)}
 <!-- ══════════════ MAIN APP ══════════════ -->
 <div class="scr off" id="s-app" style="flex-direction:row;align-items:stretch;z-index:1">
 
-  <!-- SIDEBAR -->
+  <!-- LEFT NAV RAIL -->
+  <nav class="nav-rail" id="nav-rail">
+    <div class="nav-brand"><span>👑</span>Aderias</div>
+    <button class="nav-item on" id="nav-chats" title="Chats" onclick="setNavView('chats',this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      <span class="nav-badge" id="nav-chat-badge">3</span>
+    </button>
+    <button class="nav-item" title="DMs" onclick="setNavView('dms',this);sbTab(document.querySelector('.sbt:nth-child(2)'),'direct')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </button>
+    <button class="nav-item" title="Groups" onclick="setNavView('groups',this);sbTab(document.querySelector('.sbt:nth-child(3)'),'group')">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    </button>
+    <button class="nav-item" title="Calls" onclick="setNavView('calls',this)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    </button>
+    <button class="nav-item" title="Saved" onclick="toast('Saved messages — coming soon', false)">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+    </button>
+    <button class="nav-item" title="Settings" onclick="openProfile()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </button>
+    <div class="nav-spacer"></div>
+    <button class="nav-premium" onclick="openMod('m-upgrade')"><b>Upgrade</b>Explore Premium</button>
+  </nav>
+
+  <div class="app-shell">
+    <header class="app-topbar">
+      <div class="global-srch">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--t3);flex-shrink:0"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input placeholder="Search anything…" oninput="filterSb(this.value)">
+        <kbd>Ctrl K</kbd>
+      </div>
+      <div class="top-actions">
+        <button class="top-btn" title="Theme" onclick="toast('Light glass theme active', true)">☀</button>
+        <button class="top-btn" title="Notifications" onclick="toast('No new notifications', false)">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="top-notif-dot"></span>
+        </button>
+        <button class="top-btn" onclick="openFeed()" title="Posts">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        </button>
+        <button class="top-btn" onclick="openProfile()" title="Profile">👑</button>
+      </div>
+    </header>
+
+    <div class="app-content">
   <div class="sb" id="sb">
     <div class="sb-top">
       <div class="sb-hd">
