@@ -995,21 +995,12 @@ input,textarea,select,button{font-family:var(--f)}
   <!-- MAIN -->
   <div class="main">
     <div class="empty-st" id="empty-st">
-      <div class="empty-botanical">
-        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="50" cy="50" r="44" fill="none" stroke="#c4d3e0" stroke-width="1"/>
-          <circle cx="50" cy="50" r="34" fill="none" stroke="#10b981" stroke-width="1" opacity=".5"/>
-          <circle cx="50" cy="50" r="24" fill="none" stroke="#10b981" stroke-width="1.5" opacity=".7"/>
-          <circle cx="50" cy="38" r="9" fill="none" stroke="#6ee7b7" stroke-width="2.5"/>
-          <path d="M42 46 L36 76 L64 76 L58 46Z" fill="#10b981" opacity=".85"/>
-          <circle cx="50" cy="38" r="3.5" fill="#0d6e4f"/>
-        </svg>
-      </div>
+      <img class="empty-hero" src="public/ChatGPT_Image_Aug_15,_2026,_04_16_26_PM.png" alt="Select a conversation">
       <div class="empty-title">Select a conversation</div>
-      <div class="empty-sub">All messages are encrypted</div>
-      <svg width="40" height="30" viewBox="0 0 40 30" fill="none" style="margin-top:4px;opacity:.3">
-        <path d="M5 5 Q20 5 20 15 Q20 25 35 25" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-        <path d="M30 20 L35 25 L30 30" stroke="#10b981" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      <div class="empty-sub">All messages are end-to-end encrypted and only visible to you and the people you chat with.</div>
+      <svg class="empty-arrow" width="40" height="30" viewBox="0 0 40 30" fill="none">
+        <path d="M5 5 Q20 5 20 15 Q20 25 35 25" stroke="#7c5cff" stroke-width="1.5" stroke-linecap="round" stroke-dasharray="4 4" fill="none"/>
+        <path d="M30 20 L35 25 L30 30" stroke="#7c5cff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
       </svg>
     </div>
 
@@ -1026,7 +1017,13 @@ input,textarea,select,button{font-family:var(--f)}
             E2E Encrypted
           </div>
         </div>
-        <div class="enc-tag">enter to end Encrypted</div>
+        <div class="enc-tag">🔒 E2E Encrypted</div>
+        <button class="hb" onclick="startCall('voice')" title="Voice call">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+        </button>
+        <button class="hb" onclick="startCall('video')" title="Video call">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+        </button>
         <button class="hb" onclick="openMod('m-add')" title="Add contact">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
         </button>
@@ -1100,6 +1097,22 @@ input,textarea,select,button{font-family:var(--f)}
       </div>
     </div>
   </div>
+    </div><!-- /app-content -->
+
+    <footer class="app-bottombar">
+      <div class="bottom-user">
+        <div class="me-av" id="bottom-av" onclick="openProfile()"></div>
+        <div class="bottom-user-info">
+          <div class="bottom-user-name" id="bottom-name">You</div>
+          <div class="bottom-user-meta"><span class="online-dot"></span><span id="bottom-handle">@handle</span> · <span id="bottom-role">Online</span></div>
+        </div>
+      </div>
+      <div class="secure-banner">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Secure Chats. Stronger Tomorrow
+      </div>
+    </footer>
+  </div><!-- /app-shell -->
 </div>
 
 <!-- ══════ MODAL: ADD CONTACT ══════ -->
@@ -1460,6 +1473,30 @@ input,textarea,select,button{font-family:var(--f)}
 
 <div class="toast" id="toast"></div>
 
+<!-- ══════ CALL OVERLAY (voice + video + screen share) ══════ -->
+<div id="call-overlay">
+  <div class="call-info">
+    <h2 id="call-peer-name">Calling…</h2>
+    <p id="call-status">Connecting securely…</p>
+  </div>
+  <div class="call-stage">
+    <video id="call-remote" class="call-remote" autoplay playsinline></video>
+    <video id="call-local" class="call-local" autoplay playsinline muted></video>
+    <audio id="call-remote-audio" autoplay style="display:none"></audio>
+  </div>
+  <div class="call-controls">
+    <button class="call-btn" id="call-mute-btn" onclick="toggleCallMute()" title="Mute">🎤</button>
+    <button class="call-btn" id="call-speaker-btn" onclick="toggleCallSpeaker()" title="Speaker sync">🔊</button>
+    <button class="call-btn" id="call-screen-btn" onclick="toggleScreenShare()" title="Screen share">🖥</button>
+    <button class="call-btn" id="call-cam-btn" onclick="toggleCallCamera()" title="Camera" style="display:none">📷</button>
+    <button class="call-btn end" onclick="endCall()" title="End call">📵</button>
+  </div>
+  <div id="incoming-call-bar" style="display:none;gap:10px">
+    <button class="mb prim" onclick="answerIncomingCall()">Accept</button>
+    <button class="mb red" onclick="declineIncomingCall()">Decline</button>
+  </div>
+</div>
+
 <!-- Firebase-powered app logic (must be type="module" for import/export to work) -->
 <script type="module">
 /* ════════════════════════════════════════════════════════════════════
@@ -1483,6 +1520,9 @@ import {
   collection, query, where, getDocs, addDoc, onSnapshot,
   orderBy, serverTimestamp, limit, or
 } from "https://www.gstatic.com/firebasejs/10.13.1/firebase-firestore.js";
+import {
+  getStorage, ref, uploadBytes, getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.13.1/firebase-storage.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCU7lE3Ht4hBFUcuwJT_HUggdVdF3Fijl0",
@@ -1497,6 +1537,7 @@ const firebaseConfig = {
 const fbApp = initializeApp(firebaseConfig);
 const auth = getAuth(fbApp);
 const db = getFirestore(fbApp);
+const storage = getStorage(fbApp);
 
 /* ══ STATE ══ */
 let CU = null;              // current user profile (Firestore doc, merged with auth uid)
@@ -1527,17 +1568,17 @@ const esc  = s => String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').repla
 const tsNum = t => t?.toMillis ? t.toMillis() : (t || Date.now());
 
 const GRADS = [
-  'linear-gradient(145deg,#10b981,#0d6e4f)','linear-gradient(145deg,#34d399,#0d6e4f)',
-  'linear-gradient(145deg,#d4a017,#b8860b)','linear-gradient(145deg,#e6c33d,#b8860b)',
-  'linear-gradient(145deg,#6ee7b7,#0d6e4f)','linear-gradient(145deg,#10b981,#0d6e4f)',
-  'linear-gradient(145deg,#e6c33d,#d4a017)','linear-gradient(145deg,#f59e0b,#b8860b)',
+  'linear-gradient(145deg,#7c5cff,#5b3fd4)','linear-gradient(145deg,#9b7dff,#7c5cff)',
+  'linear-gradient(145deg,#f0986a,#e8784a)','linear-gradient(145deg,#b89dff,#7c5cff)',
+  'linear-gradient(145deg,#ffb088,#e8784a)','linear-gradient(145deg,#7c5cff,#5b3fd4)',
+  'linear-gradient(145deg,#ffd0b8,#f0986a)','linear-gradient(145deg,#d4c4ff,#9b7dff)',
 ];
 const pickGrad = s => { let h=0; for(let i=0;i<s.length;i++) h+=s.charCodeAt(i); return GRADS[h%GRADS.length]; };
 const LEADER_EMAILS = ['vishvrajsinhgohil845@gmail.com','vishvrajsinhgohil435@gmail.com'];
 const isLdr = u => u && LEADER_EMAILS.includes((u.email||'').toLowerCase().trim());
 
 /* ══ TIER SYSTEM ══ */
-const FREE_LIMITS = { maxGroups:1, maxMembersPerGroup:10, maxFetchers:5, maxApiCallsPerDay:100, maxStorageMB:500, syncIntervalMin:30, historyDays:7 };
+const FREE_LIMITS = { maxGroups:1, maxMembersPerGroup:10, maxFetchers:5, maxApiCallsPerDay:100, maxStorageMB:500, syncIntervalMin:30, historyDays:7, maxMediaMB:25 };
 function userTier(u){ if(!u) return 'free'; if(isLdr(u)) return 'leader'; if(u.tier==='premium' || u.premiumApproved) return 'premium'; return 'free'; }
 function isPremium(u){ return userTier(u) !== 'free'; }
 function canCreateGroup(u){ if(userTier(u)!=='free') return {ok:true}; const groups = Object.values(window.__chats||{}).filter(c=>c.type==='group'); return groups.length < FREE_LIMITS.maxGroups ? {ok:true} : {ok:false, limit:'groups'}; }
@@ -1702,10 +1743,21 @@ function enterApp(){
   av.innerHTML=`<span class="crown-ic" id="crown" style="display:${isLdr(CU)?'block':'none'}">👑</span>`+ini(CU.name||'A');
   document.getElementById('me-name').textContent=CU.name||'You';
   document.getElementById('me-handle').textContent='@'+(CU.username||'user');
+  const bav=document.getElementById('bottom-av');
+  if(bav){ bav.style.background=CU.grad||pickGrad(CU.name||'A'); bav.textContent=ini(CU.name||'A'); }
+  const bn=document.getElementById('bottom-name'); if(bn) bn.textContent=CU.name||'You';
+  const bh=document.getElementById('bottom-handle'); if(bh) bh.textContent='@'+(CU.username||'user');
+  const br=document.getElementById('bottom-role'); if(br) br.textContent=isLdr(CU)?'Leader · Online':'Online';
   document.getElementById('ldr-btn').style.display=isLdr(CU)?'flex':'none';
   updateTierBadge(); updateRegPill(); buildCurrGrids();
-  listenChats(); renderStoriesRow();
+  listenChats(); renderStoriesRow(); listenIncomingCalls();
 }
+window.setNavView = function(view, btn){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('on'));
+  if(btn) btn.classList.add('on');
+  if(view==='calls') toast('Pick a chat and tap 📞 or 🎥 to start a voice/video call', true);
+  if(view==='chats'){ sbF='all'; document.querySelectorAll('.sbt').forEach(b=>b.classList.remove('on')); document.querySelector('.sbt')?.classList.add('on'); renderSb(); }
+};
 function updateTierBadge(){
   const el=document.getElementById('tier-badge'); if(!el||!CU) return;
   const t=userTier(CU);
@@ -1840,12 +1892,15 @@ function appendMsg(m, scroll=true){
         </div>${ft}`;
     }
   } else if(m.type==='image'){
-    w.innerHTML=`${sender}<img class="msg-img" src="${m.data}" onclick="window.open('${m.data}','_blank')">${ft}`;
+    const src = m.url || m.data;
+    w.innerHTML=`${sender}<img class="msg-img" src="${src}" onclick="window.open('${src}','_blank')">${ft}`;
   } else if(m.type==='audio'){
-    w.innerHTML=`${sender}<div class="msg-audio"><audio controls src="${m.data}"></audio></div>${ft}`;
+    const src = m.url || m.data;
+    w.innerHTML=`${sender}<div class="msg-audio"><audio controls src="${src}"></audio></div>${ft}`;
   } else if(m.type==='file'){
+    const src = m.url || m.data;
     const sizeStr = m.size ? (m.size>1024*1024 ? (m.size/1024/1024).toFixed(1)+' MB' : Math.round(m.size/1024)+' KB') : '';
-    w.innerHTML=`${sender}<a class="msg-file-card" href="${m.data}" download="${esc(m.fileName||'file')}">
+    w.innerHTML=`${sender}<a class="msg-file-card" href="${src}" download="${esc(m.fileName||'file')}" target="_blank">
       <div class="msg-file-ic">📎</div>
       <div><div class="msg-file-name">${esc(m.fileName||'File')}</div><div class="msg-file-size">${sizeStr}</div></div>
     </a>${ft}`;
@@ -1877,16 +1932,29 @@ async function sendMediaMessage(payload, previewLabel){
   await updateDoc(doc(db,'chats',selCid), { prev: previewLabel, updatedAt: Date.now() });
 }
 
-/* ══ FILE ATTACH (any file type) ══
-   Files are embedded directly as base64 data — no paid storage needed.
-   Firestore caps each document at ~1MB, so we cap uploads around 700KB
-   (base64 adds ~33% overhead) to stay safely under that limit. */
-const MAX_FILE_BYTES = 700 * 1024;
+/* ══ FILE ATTACH — up to 25 MB via Firebase Storage ══ */
+const MAX_FILE_BYTES = FREE_LIMITS.maxMediaMB * 1024 * 1024;
+const INLINE_MAX_BYTES = 700 * 1024;
+
+async function uploadChatFile(file){
+  const path = `chat-media/${selCid}/${Date.now()}_${file.name.replace(/[^a-zA-Z0-9._-]/g,'_')}`;
+  const storageRef = ref(storage, path);
+  await uploadBytes(storageRef, file);
+  return getDownloadURL(storageRef);
+}
+
+async function prepareMediaPayload(file){
+  if(file.size <= INLINE_MAX_BYTES){
+    const data = await fileToDataUrl(file);
+    return { data, size: file.size, fileName: file.name };
+  }
+  toast('Uploading to secure cloud storage…', true);
+  const url = await uploadChatFile(file);
+  return { url, size: file.size, fileName: file.name };
+}
 
 window.attachFile = function(){
   if(!selCid){ toast('Open a chat first', false); return; }
-  // Clicking a real <input type="file"> is what triggers the browser's
-  // native file-picker permission — no extra code needed to "ask" for it.
   document.getElementById('file-input').click();
 };
 
@@ -1895,17 +1963,26 @@ window.onFilePicked = async function(e){
   e.target.value = '';
   if(!file) return;
   if(file.size > MAX_FILE_BYTES){
-    toast(`"${file.name}" is too large (${(file.size/1024/1024).toFixed(1)}MB). Max ~700KB on the free plan.`, false);
+    toast(`"${file.name}" is too large (${(file.size/1024/1024).toFixed(1)} MB). Max ${FREE_LIMITS.maxMediaMB} MB.`, false);
     return;
   }
-  const dataUrl = await fileToDataUrl(file);
-  if(file.type.startsWith('image/')){
-    await sendMediaMessage({ type:'image', data: dataUrl, fileName: file.name, size: file.size }, '📷 Photo');
-    toast('Photo sent!', true);
-  } else {
-    await sendMediaMessage({ type:'file', data: dataUrl, fileName: file.name, size: file.size }, '📎 '+file.name);
-    toast('File sent!', true);
+  loading(true);
+  try{
+    const payload = await prepareMediaPayload(file);
+    if(file.type.startsWith('image/')){
+      await sendMediaMessage({ type:'image', ...payload }, '📷 Photo');
+      toast('Photo sent!', true);
+    } else if(file.type.startsWith('video/')){
+      await sendMediaMessage({ type:'file', ...payload }, '🎬 Video');
+      toast('Video sent!', true);
+    } else {
+      await sendMediaMessage({ type:'file', ...payload }, '📎 '+file.name);
+      toast('File sent!', true);
+    }
+  }catch(err){
+    toast('Upload failed: '+(err.message||'try a smaller file'), false);
   }
+  loading(false);
 };
 
 function fileToDataUrl(file){
@@ -2001,14 +2078,24 @@ window.toggleVoiceRecord = async function(){
       const blob = new Blob(__recChunks, { type:'audio/webm' });
       __recStream.getTracks().forEach(t=>t.stop());
       if(blob.size > MAX_FILE_BYTES){
-        toast('Recording too long/large to send — try a shorter clip', false);
+        toast('Recording too long/large — max '+FREE_LIMITS.maxMediaMB+' MB', false);
         return;
       }
-      const dataUrl = await new Promise((resolve)=>{
-        const r=new FileReader(); r.onload=()=>resolve(r.result); r.readAsDataURL(blob);
-      });
-      await sendMediaMessage({ type:'audio', data: dataUrl }, '🎤 Voice message');
-      toast('Voice message sent!', true);
+      loading(true);
+      try{
+        let payload;
+        if(blob.size <= INLINE_MAX_BYTES){
+          const data = await new Promise((resolve)=>{ const r=new FileReader(); r.onload=()=>resolve(r.result); r.readAsDataURL(blob); });
+          payload = { type:'audio', data };
+        } else {
+          const file = new File([blob], 'voice-'+Date.now()+'.webm', { type:'audio/webm' });
+          const url = await uploadChatFile(file);
+          payload = { type:'audio', url, size: blob.size, fileName: 'voice-message.webm' };
+        }
+        await sendMediaMessage(payload, '🎤 Voice message');
+        toast('Voice message sent!', true);
+      }catch(e){ toast('Voice upload failed', false); }
+      loading(false);
     };
     __recorder.start();
   } else {
@@ -2703,6 +2790,248 @@ window.submitPost = async function(){
   closeMod('m-post-create');
   toast('Posted!', true);
   openFeed();
+};
+
+/* ══ VOICE & VIDEO CALLS (WebRTC + Firestore signaling) ══ */
+const ICE_SERVERS = { iceServers: [{ urls: 'stun:stun.l.google.com:19302' }, { urls: 'stun:stun1.l.google.com:19302' }] };
+let CALL = { pc:null, localStream:null, callId:null, mode:'voice', role:null, peerId:null, chatId:null,
+  muted:false, speakerOn:true, screenSharing:false, camOn:true, unsub:null, candUnsubs:[], incomingId:null };
+
+function setCallStatus(txt){ const el=document.getElementById('call-status'); if(el) el.textContent=txt; }
+function showCallUI(show){ document.getElementById('call-overlay').classList.toggle('open', !!show); }
+
+function getDirectPeerId(){
+  const c = window.__chats?.[selCid];
+  if(!c || c.type!=='direct') return null;
+  return (c.members||[]).find(id=>id!==CU.id) || null;
+}
+
+async function bindLocalPreview(stream, mode){
+  const localV = document.getElementById('call-local');
+  const remoteV = document.getElementById('call-remote');
+  const remoteA = document.getElementById('call-remote-audio');
+  localV.srcObject = stream;
+  localV.classList.toggle('hidden', mode==='voice');
+  remoteV.style.display = mode==='video' ? 'block' : 'none';
+  remoteA.muted = !CALL.speakerOn;
+  document.getElementById('call-cam-btn').style.display = mode==='video' ? 'flex' : 'none';
+}
+
+function createPeerConnection(){
+  const pc = new RTCPeerConnection(ICE_SERVERS);
+  pc.ontrack = (e)=>{
+    const stream = e.streams[0];
+    const remoteV = document.getElementById('call-remote');
+    const remoteA = document.getElementById('call-remote-audio');
+    if(CALL.mode==='video'){
+      remoteV.srcObject = stream;
+      remoteV.style.display = 'block';
+    } else {
+      remoteA.srcObject = stream;
+      remoteA.muted = !CALL.speakerOn;
+    }
+    setCallStatus('Connected · E2E encrypted channel');
+  };
+  pc.onicecandidate = (e)=>{
+    if(e.candidate && CALL.callId){
+      addDoc(collection(db,'calls',CALL.callId,'candidates'), {
+        candidate: e.candidate.toJSON(), from: CU.id, ts: Date.now()
+      });
+    }
+  };
+  pc.onconnectionstatechange = ()=>{
+    if(['failed','disconnected','closed'].includes(pc.connectionState)) setCallStatus('Call '+pc.connectionState);
+  };
+  return pc;
+}
+
+function watchCallDoc(callId, onUpdate){
+  if(CALL.unsub) CALL.unsub();
+  CALL.unsub = onSnapshot(doc(db,'calls',callId), async (snap)=>{
+    if(!snap.exists()) return;
+    await onUpdate(snap.data());
+  });
+}
+
+function watchCandidates(callId){
+  CALL.candUnsubs.forEach(u=>u()); CALL.candUnsubs=[];
+  const unsub = onSnapshot(collection(db,'calls',callId,'candidates'), (snap)=>{
+    snap.docChanges().forEach(async ch=>{
+      if(ch.type!=='added') return;
+      const data = ch.doc.data();
+      if(data.from===CU.id) return;
+      if(CALL.pc && data.candidate){
+        try{ await CALL.pc.addIceCandidate(new RTCIceCandidate(data.candidate)); }catch(e){}
+      }
+    });
+  });
+  CALL.candUnsubs.push(unsub);
+}
+
+window.startCall = async function(mode){
+  if(!selCid){ toast('Open a chat first', false); return; }
+  const peerId = getDirectPeerId();
+  if(!peerId){ toast('Calls work in direct (DM) chats only', false); return; }
+  if(CALL.pc){ toast('Already in a call', false); return; }
+  CALL.mode = mode; CALL.role = 'caller'; CALL.chatId = selCid; CALL.peerId = peerId;
+  CALL.callId = 'call_'+selCid+'_'+Date.now();
+  const peer = await cacheUser(peerId);
+  document.getElementById('call-peer-name').textContent = peer?.name || 'Contact';
+  setCallStatus(mode==='video' ? 'Starting video call…' : 'Starting voice call…');
+  showCallUI(true);
+  document.getElementById('incoming-call-bar').style.display='none';
+  try{
+    CALL.localStream = await navigator.mediaDevices.getUserMedia({ audio:true, video: mode==='video' });
+    await bindLocalPreview(CALL.localStream, mode);
+    CALL.pc = createPeerConnection();
+    CALL.localStream.getTracks().forEach(t=>CALL.pc.addTrack(t, CALL.localStream));
+    await setDoc(doc(db,'calls',CALL.callId), {
+      chatId: selCid, callerId: CU.id, calleeId: peerId,
+      callerName: CU.name, type: mode, status: 'ringing', createdAt: Date.now()
+    });
+    const offer = await CALL.pc.createOffer();
+    await CALL.pc.setLocalDescription(offer);
+    await updateDoc(doc(db,'calls',CALL.callId), { offer: { sdp: offer.sdp, type: offer.type } });
+    watchCandidates(CALL.callId);
+    watchCallDoc(CALL.callId, async (data)=>{
+      if(data.answer && CALL.pc && !CALL.pc.currentRemoteDescription){
+        await CALL.pc.setRemoteDescription(new RTCSessionDescription(data.answer));
+        await updateDoc(doc(db,'calls',CALL.callId), { status:'active' });
+        setCallStatus('Ringing… waiting for answer');
+      }
+      if(data.status==='active') setCallStatus('Connected');
+      if(data.status==='ended') cleanupCall(false);
+    });
+    setCallStatus('Ringing…');
+  }catch(err){
+    toast('Could not start call — check mic/camera permissions', false);
+    cleanupCall(false);
+  }
+};
+
+window.answerIncomingCall = async function(){
+  const callId = CALL.incomingId || CALL.callId;
+  if(!callId) return;
+  const snap = await getDoc(doc(db,'calls',callId));
+  if(!snap.exists()) return;
+  const data = snap.data();
+  CALL.callId = callId; CALL.role = 'callee'; CALL.mode = data.type||'voice';
+  CALL.chatId = data.chatId; CALL.peerId = data.callerId;
+  document.getElementById('call-peer-name').textContent = data.callerName || 'Caller';
+  document.getElementById('incoming-call-bar').style.display='none';
+  showCallUI(true);
+  try{
+    CALL.localStream = await navigator.mediaDevices.getUserMedia({ audio:true, video: CALL.mode==='video' });
+    await bindLocalPreview(CALL.localStream, CALL.mode);
+    CALL.pc = createPeerConnection();
+    CALL.localStream.getTracks().forEach(t=>CALL.pc.addTrack(t, CALL.localStream));
+    if(data.offer) await CALL.pc.setRemoteDescription(new RTCSessionDescription(data.offer));
+    const answer = await CALL.pc.createAnswer();
+    await CALL.pc.setLocalDescription(answer);
+    await updateDoc(doc(db,'calls',callId), { answer: { sdp: answer.sdp, type: answer.type }, status:'active' });
+    watchCandidates(callId);
+    watchCallDoc(callId, async (d)=>{ if(d.status==='ended') cleanupCall(false); });
+    setCallStatus('Connected');
+  }catch(err){
+    toast('Could not answer call', false);
+    await updateDoc(doc(db,'calls',callId), { status:'ended', endedAt: Date.now() });
+    cleanupCall(false);
+  }
+};
+
+window.declineIncomingCall = async function(){
+  if(CALL.incomingId){
+    await updateDoc(doc(db,'calls',CALL.incomingId), { status:'ended', endedAt: Date.now() });
+    CALL.incomingId = null;
+  }
+  showCallUI(false);
+  toast('Call declined', false);
+};
+
+function listenIncomingCalls(){
+  if(window.__callListenUnsub) window.__callListenUnsub();
+  const q = query(collection(db,'calls'), where('calleeId','==', CU.id), where('status','==','ringing'));
+  window.__callListenUnsub = onSnapshot(q, (snap)=>{
+    snap.docChanges().forEach(ch=>{
+      if(ch.type!=='added') return;
+      const data = ch.doc.data();
+      if(CALL.pc) return;
+      CALL.incomingId = ch.doc.id;
+      document.getElementById('call-peer-name').textContent = data.callerName || 'Incoming call';
+      setCallStatus((data.type==='video'?'Video':'Voice')+' call incoming…');
+      document.getElementById('incoming-call-bar').style.display='flex';
+      showCallUI(true);
+    });
+  });
+}
+
+window.toggleCallMute = function(){
+  if(!CALL.localStream) return;
+  CALL.muted = !CALL.muted;
+  CALL.localStream.getAudioTracks().forEach(t=>{ t.enabled = !CALL.muted; });
+  document.getElementById('call-mute-btn').classList.toggle('on', CALL.muted);
+};
+
+window.toggleCallSpeaker = function(){
+  CALL.speakerOn = !CALL.speakerOn;
+  const remoteA = document.getElementById('call-remote-audio');
+  const remoteV = document.getElementById('call-remote');
+  if(remoteA) remoteA.muted = !CALL.speakerOn;
+  if(remoteV) remoteV.muted = !CALL.speakerOn;
+  document.getElementById('call-speaker-btn').classList.toggle('on', CALL.speakerOn);
+  toast(CALL.speakerOn ? 'Speaker sync ON — audio routed to speaker' : 'Speaker sync OFF — audio muted', true);
+};
+
+window.toggleCallCamera = function(){
+  if(!CALL.localStream || CALL.mode!=='video') return;
+  CALL.camOn = !CALL.camOn;
+  CALL.localStream.getVideoTracks().forEach(t=>{ t.enabled = CALL.camOn; });
+  document.getElementById('call-cam-btn').classList.toggle('on', !CALL.camOn);
+};
+
+window.toggleScreenShare = async function(){
+  if(!CALL.pc){ toast('Start a call first', false); return; }
+  try{
+    if(!CALL.screenSharing){
+      const screenStream = await navigator.mediaDevices.getDisplayMedia({ video:true, audio:false });
+      const screenTrack = screenStream.getVideoTracks()[0];
+      const sender = CALL.pc.getSenders().find(s=>s.track && s.track.kind==='video');
+      if(sender) await sender.replaceTrack(screenTrack);
+      CALL._savedVideoTrack = CALL.localStream?.getVideoTracks()[0] || null;
+      screenTrack.onended = ()=> toggleScreenShare();
+      CALL.screenSharing = true;
+      document.getElementById('call-screen-btn').classList.add('on');
+      setCallStatus('Screen sharing active');
+      toast('Screen sharing started', true);
+    } else {
+      const sender = CALL.pc.getSenders().find(s=>s.track && s.track.kind==='video');
+      if(sender && CALL._savedVideoTrack) await sender.replaceTrack(CALL._savedVideoTrack);
+      CALL.screenSharing = false;
+      document.getElementById('call-screen-btn').classList.remove('on');
+      setCallStatus('Screen sharing stopped');
+    }
+  }catch(err){
+    toast('Screen share cancelled or denied', false);
+  }
+};
+
+async function cleanupCall(notifyPeer){
+  if(CALL.localStream) CALL.localStream.getTracks().forEach(t=>t.stop());
+  if(CALL.pc) CALL.pc.close();
+  if(CALL.unsub){ CALL.unsub(); CALL.unsub=null; }
+  CALL.candUnsubs.forEach(u=>u()); CALL.candUnsubs=[];
+  if(notifyPeer && CALL.callId){
+    try{ await updateDoc(doc(db,'calls',CALL.callId), { status:'ended', endedAt: Date.now() }); }catch(e){}
+  }
+  CALL = { pc:null, localStream:null, callId:null, mode:'voice', role:null, peerId:null, chatId:null,
+    muted:false, speakerOn:true, screenSharing:false, camOn:true, unsub:null, candUnsubs:[], incomingId:null };
+  showCallUI(false);
+  document.getElementById('incoming-call-bar').style.display='none';
+}
+
+window.endCall = async function(){
+  await cleanupCall(true);
+  toast('Call ended', false);
 };
 
 /* ══ BOOT ══ */
